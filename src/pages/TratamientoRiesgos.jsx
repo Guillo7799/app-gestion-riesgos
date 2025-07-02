@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { db } from "../firebase/config";
 import { collection, getDocs, addDoc } from "firebase/firestore";
 import "../styles/TratamientoRiesgos.css";
+import Swal from "sweetalert2";
 
 export default function TratamientoRiesgos() {
   const [riesgos, setRiesgos] = useState([]);
@@ -43,13 +44,25 @@ export default function TratamientoRiesgos() {
         resImpacto,
       });
 
-      alert("Tratamiento guardado correctamente");
+      //alert("Tratamiento guardado correctamente");
+      Swal.fire({
+        title: "Éxito",
+        text: "Tratamiento guardado correctamente",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
       setRiesgoId("");
       setEstrategia("");
       setControlesPropuestos("");
       setResponsable("");
     } catch (err) {
-      alert("Error al guardar tratamiento: " + err.message);
+      //alert("Error al guardar tratamiento: " + err.message);
+      Swal.fire({
+        title: "Error",
+        text: "Error al guardar tratamiento: " + err.message,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 
