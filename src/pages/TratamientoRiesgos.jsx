@@ -8,6 +8,8 @@ export default function TratamientoRiesgos() {
   const [estrategia, setEstrategia] = useState("");
   const [controlesPropuestos, setControlesPropuestos] = useState("");
   const [responsable, setResponsable] = useState("");
+  const [resProbabilidad, setResProbabilidad] = useState(1);
+  const [resImpacto, setResImpacto] = useState(1);
 
   useEffect(() => {
     const fetchRiesgos = async () => {
@@ -35,6 +37,9 @@ export default function TratamientoRiesgos() {
         controlesPropuestos,
         responsable,
         fechaRegistro: new Date(),
+        riesgoResidual: resProbabilidad * resImpacto,
+        resProbabilidad,
+        resImpacto,
       });
 
       alert("Tratamiento guardado correctamente");
@@ -90,6 +95,36 @@ export default function TratamientoRiesgos() {
         onChange={(e) => setResponsable(e.target.value)}
         required
       />
+
+      <h4>Evaluación de Riesgo Residual</h4>
+      <label>
+        Probabilidad residual (1-5)
+        <input
+          type="number"
+          min={1}
+          max={5}
+          value={resProbabilidad}
+          onChange={(e) => setResProbabilidad(Number(e.target.value))}
+          required
+        />
+      </label>
+
+      <label>
+        Impacto residual (1-5)
+        <input
+          type="number"
+          min={1}
+          max={5}
+          value={resImpacto}
+          onChange={(e) => setResImpacto(Number(e.target.value))}
+          required
+        />
+      </label>
+
+      <p>
+        <strong>Nivel de riesgo residual:</strong>{" "}
+        {resProbabilidad * resImpacto}
+      </p>
 
       <button type="submit">Guardar tratamiento</button>
     </form>
