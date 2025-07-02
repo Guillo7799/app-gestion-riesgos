@@ -3,6 +3,7 @@ import { auth } from "../firebase/config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/Login.css";
+import Swal from "sweetalert2";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -14,8 +15,20 @@ export default function Register() {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       navigate("/dashboard");
+      Swal.fire({
+        title: "Éxito",
+        text: "Usuario registrado correctamente",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
     } catch (error) {
-      alert("Error al registrar: " + error.message);
+      //alert("Error al registrar: " + error.message);
+      Swal.fire({
+        title: "Error",
+        text: "Error al registrar el usuario" + error.message,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 

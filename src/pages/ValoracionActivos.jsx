@@ -8,6 +8,7 @@ import {
   doc,
 } from "firebase/firestore";
 import "../styles/ValoracionActivos.css";
+import Swal from "sweetalert2";
 
 export default function ValoracionActivos() {
   const [activo, setActivo] = useState("");
@@ -46,7 +47,12 @@ export default function ValoracionActivos() {
         fechaRegistro: new Date(),
       });
 
-      alert("Activo guardado correctamente");
+      Swal.fire({
+        title: "Éxito",
+        text: "El activo fue registrado correctamente",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
       setActivo("");
       setCategoria("");
       setConf(1);
@@ -54,7 +60,13 @@ export default function ValoracionActivos() {
       setDisp(1);
       fetchActivos();
     } catch (e) {
-      alert("Error al guardar: " + e.message);
+      //alert("Error al guardar: " + e.message);
+      Swal.fire({
+        title: "Error",
+        text: "El activo no se pudo registrar" + e.message,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 
