@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import IdentificacionRiesgos from "./pages/IdentificacionRiesgos";
 import ValoracionActivos from "./pages/ValoracionActivos";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/config";
@@ -37,6 +38,10 @@ function App() {
         <Route
           path="/activos"
           element={user ? <ValoracionActivos /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/identificacion-riesgos"
+          element={<IdentificacionRiesgos />}
         />
       </Routes>
     </BrowserRouter>
