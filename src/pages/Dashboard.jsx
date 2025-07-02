@@ -22,6 +22,9 @@ export default function Dashboard() {
       <button onClick={() => navigate("/tratamiento-riesgos")}>
         Tratamiento de Riesgos
       </button>
+      <button onClick={() => navigate("/listatratamientos")}>
+        Lista de Tratamientos
+      </button>
     </div>
   );
 }
