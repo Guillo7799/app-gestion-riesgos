@@ -19,6 +19,9 @@ export default function Dashboard() {
       <button onClick={() => navigate("/identificacion-riesgos")}>
         Identificación de Riesgos
       </button>
+      <button onClick={() => navigate("/tratamiento-riesgos")}>
+        Tratamiento de Riesgos
+      </button>
     </div>
   );
 }
