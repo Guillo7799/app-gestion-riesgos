@@ -1,0 +1,119 @@
+.tratamientos-panel {
+  max-width: 900px;
+  margin: 2.5rem auto;
+  background: var(--login-bg, rgba(36, 36, 36, 0.97));
+  border-radius: 14px;
+  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.1);
+  padding: 2.5rem 2rem 2rem 2rem;
+}
+
+.tratamientos-panel h2 {
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
+.no-tratamientos {
+  text-align: center;
+  color: #888;
+  font-size: 1.1em;
+  margin-top: 2rem;
+}
+
+.tratamientos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.tratamiento-card {
+  background: #23233a;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.07);
+  padding: 1.2rem 1.2rem 1rem 1.2rem;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.tratamiento-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1em;
+  font-weight: 600;
+  margin-bottom: 0.3em;
+}
+
+.tratamiento-activo {
+  color: #646cff;
+}
+
+.tratamiento-estrategia {
+  background: #535bf2;
+  color: #fff;
+  border-radius: 6px;
+  padding: 0.2em 0.7em;
+  font-size: 0.98em;
+  font-weight: 500;
+}
+
+.tratamiento-body > div {
+  margin-bottom: 0.2em;
+}
+
+.tratamiento-residual {
+  color: #ffb300;
+  font-weight: 600;
+}
+
+.tratamiento-fecha {
+  color: #b3b3b3;
+  font-size: 0.97em;
+}
+
+.borrar-tratamiento {
+  background: none;
+  border: none;
+  color: #ff4d4f;
+  font-size: 1.2em;
+  cursor: pointer;
+  padding: 0.2em 0.5em;
+  border-radius: 6px;
+  align-self: flex-end;
+  transition: background 0.18s;
+  margin-top: 0.5em;
+}
+.borrar-tratamiento:hover {
+  background: #ff4d4f22;
+}
+
+@media (prefers-color-scheme: light) {
+  .tratamientos-panel {
+    background: #fff;
+    box-shadow: 0 4px 24px 0 rgba(100, 108, 255, 0.06);
+  }
+  .tratamiento-card {
+    background: #f4f6fa;
+    color: #213547;
+  }
+  .tratamiento-activo {
+    color: #646cff;
+  }
+  .tratamiento-estrategia {
+    background: #747bff;
+    color: #fff;
+  }
+  .tratamiento-residual {
+    color: #ff9800;
+  }
+  .tratamiento-fecha {
+    color: #747bff;
+  }
+}
+
+@media (max-width: 600px) {
+  .tratamientos-panel {
+    padding: 1.2rem 0.5rem;
+  }
+}

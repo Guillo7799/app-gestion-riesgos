@@ -33,20 +33,35 @@ function App() {
           element={user ? <Navigate to="/dashboard" /> : <Login />}
         />
         <Route path="/register" element={<Register />} />
-        <Route
-          path="/dashboard"
-          element={user ? <Dashboard /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/activos"
-          element={user ? <ValoracionActivos /> : <Navigate to="/" />}
-        />
+        {user && (
+          <Route path="/dashboard" element={<Dashboard />}>
+            <Route index element={<div>Bienvenido al Panel Principal</div>} />
+            <Route path="activos" element={<ValoracionActivos />} />
+            <Route
+              path="identificacion-riesgos"
+              element={<IdentificacionRiesgos />}
+            />
+            <Route
+              path="tratamiento-riesgos"
+              element={<TratamientoRiesgos />}
+            />
+            <Route path="listatratamientos" element={<ListaTratamientos />} />
+          </Route>
+        )}
+        {/* Redirección para rutas antiguas */}
+        <Route path="/activos" element={<Navigate to="/dashboard/activos" />} />
         <Route
           path="/identificacion-riesgos"
-          element={<IdentificacionRiesgos />}
+          element={<Navigate to="/dashboard/identificacion-riesgos" />}
         />
-        <Route path="/tratamiento-riesgos" element={<TratamientoRiesgos />} />
-        <Route path="/listatratamientos" element={<ListaTratamientos />} />
+        <Route
+          path="/tratamiento-riesgos"
+          element={<Navigate to="/dashboard/tratamiento-riesgos" />}
+        />
+        <Route
+          path="/listatratamientos"
+          element={<Navigate to="/dashboard/listatratamientos" />}
+        />
       </Routes>
     </BrowserRouter>
   );

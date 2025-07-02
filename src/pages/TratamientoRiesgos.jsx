@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { db } from "../firebase/config";
 import { collection, getDocs, addDoc } from "firebase/firestore";
+import "../styles/TratamientoRiesgos.css";
 
 export default function TratamientoRiesgos() {
   const [riesgos, setRiesgos] = useState([]);
@@ -53,79 +54,91 @@ export default function TratamientoRiesgos() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="tratamiento-form">
       <h2>Tratamiento del Riesgo</h2>
-
-      <select
-        value={riesgoId}
-        onChange={(e) => setRiesgoId(e.target.value)}
-        required
-      >
-        <option value="">-- Selecciona un riesgo --</option>
-        {riesgos.map((r) => (
-          <option key={r.id} value={r.id}>
-            {r.activoNombre} - {r.amenaza}
-          </option>
-        ))}
-      </select>
-
-      <select
-        value={estrategia}
-        onChange={(e) => setEstrategia(e.target.value)}
-        required
-      >
-        <option value="">-- Selecciona estrategia --</option>
-        <option value="Mitigar">Mitigar</option>
-        <option value="Transferir">Transferir</option>
-        <option value="Aceptar">Aceptar</option>
-        <option value="Evitar">Evitar</option>
-      </select>
-
-      <textarea
-        placeholder="Controles propuestos (puedes usar controles ISO 27002)"
-        value={controlesPropuestos}
-        onChange={(e) => setControlesPropuestos(e.target.value)}
-        required
-      />
-
-      <input
-        type="text"
-        placeholder="Responsable"
-        value={responsable}
-        onChange={(e) => setResponsable(e.target.value)}
-        required
-      />
-
+      <div className="form-group">
+        <label htmlFor="riesgo-select">Riesgo</label>
+        <select
+          id="riesgo-select"
+          value={riesgoId}
+          onChange={(e) => setRiesgoId(e.target.value)}
+          required
+        >
+          <option value="">-- Selecciona un riesgo --</option>
+          {riesgos.map((r) => (
+            <option key={r.id} value={r.id}>
+              {r.activoNombre} - {r.amenaza}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="form-group">
+        <label htmlFor="estrategia">Estrategia</label>
+        <select
+          id="estrategia"
+          value={estrategia}
+          onChange={(e) => setEstrategia(e.target.value)}
+          required
+        >
+          <option value="">-- Selecciona estrategia --</option>
+          <option value="Mitigar">Mitigar</option>
+          <option value="Transferir">Transferir</option>
+          <option value="Aceptar">Aceptar</option>
+          <option value="Evitar">Evitar</option>
+        </select>
+      </div>
+      <div className="form-group">
+        <label htmlFor="controlesPropuestos">Controles propuestos</label>
+        <textarea
+          id="controlesPropuestos"
+          placeholder="Controles propuestos (puedes usar controles ISO 27002)"
+          value={controlesPropuestos}
+          onChange={(e) => setControlesPropuestos(e.target.value)}
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="responsable">Responsable</label>
+        <input
+          id="responsable"
+          type="text"
+          placeholder="Responsable"
+          value={responsable}
+          onChange={(e) => setResponsable(e.target.value)}
+          required
+        />
+      </div>
       <h4>Evaluación de Riesgo Residual</h4>
-      <label>
-        Probabilidad residual (1-5)
-        <input
-          type="number"
-          min={1}
-          max={5}
-          value={resProbabilidad}
-          onChange={(e) => setResProbabilidad(Number(e.target.value))}
-          required
-        />
-      </label>
-
-      <label>
-        Impacto residual (1-5)
-        <input
-          type="number"
-          min={1}
-          max={5}
-          value={resImpacto}
-          onChange={(e) => setResImpacto(Number(e.target.value))}
-          required
-        />
-      </label>
-
-      <p>
+      <div className="form-group-inline">
+        <div>
+          <label htmlFor="resProbabilidad">Probabilidad residual (1-5)</label>
+          <input
+            id="resProbabilidad"
+            type="number"
+            min={1}
+            max={5}
+            value={resProbabilidad}
+            onChange={(e) => setResProbabilidad(Number(e.target.value))}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="resImpacto">Impacto residual (1-5)</label>
+          <input
+            id="resImpacto"
+            type="number"
+            min={1}
+            max={5}
+            value={resImpacto}
+            onChange={(e) => setResImpacto(Number(e.target.value))}
+            required
+          />
+        </div>
+      </div>
+      <div className="nivel-riesgo">
         <strong>Nivel de riesgo residual:</strong>{" "}
         {resProbabilidad * resImpacto}
-      </p>
-
+      </div>
       <button type="submit">Guardar tratamiento</button>
     </form>
   );
