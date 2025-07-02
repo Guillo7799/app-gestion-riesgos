@@ -16,6 +16,9 @@ export default function Dashboard() {
         Valoración de Activos
       </button>
       <button onClick={logout}>Cerrar sesión</button>
+      <button onClick={() => navigate("/identificacion-riesgos")}>
+        Identificación de Riesgos
+      </button>
     </div>
   );
 }
