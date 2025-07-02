@@ -2,7 +2,8 @@ console.log("Auth Firebase:", auth);
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/config";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import "../styles/Login.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -20,21 +21,35 @@ export default function Login() {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <h2>Iniciar Sesión</h2>
-      <input
-        type="email"
-        placeholder="Correo"
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Contraseña"
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <button type="submit">Iniciar sesión</button>
-    </form>
+    <div className="login-container">
+      <div className="login-left">
+        <h1>Bienvenido</h1>
+        <p>
+          Gestiona los riesgos de tu organización de manera eficiente y segura.
+          Accede a tu cuenta para comenzar.
+        </p>
+      </div>
+      <div className="login-right">
+        <form onSubmit={handleLogin} className="login-form">
+          <h2>Iniciar Sesión</h2>
+          <input
+            type="email"
+            placeholder="Correo"
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit">Iniciar sesión</button>
+          <div className="login-register-link">
+            <Link to="/register">Crear cuenta</Link>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
