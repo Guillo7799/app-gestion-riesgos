@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import IdentificacionRiesgos from "./pages/IdentificacionRiesgos";
+import TratamientoRiesgos from "./pages/TratamientoRiesgos";
 import ValoracionActivos from "./pages/ValoracionActivos";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/config";
@@ -43,6 +44,7 @@ function App() {
           path="/identificacion-riesgos"
           element={<IdentificacionRiesgos />}
         />
+        <Route path="/tratamiento-riesgos" element={<TratamientoRiesgos />} />
       </Routes>
     </BrowserRouter>
   );

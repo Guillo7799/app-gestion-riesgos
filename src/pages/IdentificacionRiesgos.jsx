@@ -43,7 +43,6 @@ export default function IdentificacionRiesgos() {
         fechaRegistro: new Date(),
       });
       alert("Riesgo registrado correctamente.");
-      // Reset
       setActivoId("");
       setAmenaza("");
       setVulnerabilidad("");
