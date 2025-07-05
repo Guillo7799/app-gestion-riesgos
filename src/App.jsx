@@ -6,6 +6,7 @@ import IdentificacionRiesgos from "./pages/IdentificacionRiesgos";
 import TratamientoRiesgos from "./pages/TratamientoRiesgos";
 import ListaTratamientos from "./pages/ListaTratamientos";
 import ValoracionActivos from "./pages/ValoracionActivos";
+import Observaciones from "./pages/Observaciones";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/config";
 import { useEffect, useState } from "react";
@@ -46,6 +47,7 @@ function App() {
               element={<TratamientoRiesgos />}
             />
             <Route path="listatratamientos" element={<ListaTratamientos />} />
+            <Route path="observaciones" element={<Observaciones />} />
           </Route>
         )}
         {/* Redirección para rutas antiguas */}
@@ -61,6 +63,10 @@ function App() {
         <Route
           path="/listatratamientos"
           element={<Navigate to="/dashboard/listatratamientos" />}
+        />
+        <Route
+          path="/observaciones"
+          element={<Navigate to="/dashboard/observaciones" />}
         />
       </Routes>
     </BrowserRouter>

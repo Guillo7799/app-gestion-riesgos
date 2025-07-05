@@ -1,0 +1,108 @@
+.observaciones-wrapper {
+  max-width: 800px;
+  margin: 2.5rem auto;
+  padding: 2rem;
+  background: var(--login-bg, rgba(36, 36, 36, 0.97));
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+}
+
+.observaciones-wrapper h2,
+.observaciones-wrapper h3 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.observacion-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.observacion-form label {
+  font-weight: 500;
+}
+
+.observacion-form select,
+.observacion-form textarea {
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #646cff44;
+  background: #232323;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.observacion-form textarea {
+  resize: none;
+}
+
+.observacion-form button {
+  align-self: flex-end;
+  padding: 0.6rem 1.2rem;
+  background: #646cff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.observacion-form button:hover {
+  background: #4e56e6;
+}
+
+.observacion-card {
+  background: #1c1c2c;
+  border-radius: 14px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.observacion-card p {
+  margin: 0.3rem 0;
+}
+
+.observacion-card small {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.save-section {
+  text-align: center;
+}
+
+.observacion-textarea {
+  width: 95%;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #646cff44;
+  background: #232323;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.riesgo-select {
+  width: 99%;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #646cff44;
+  background: #232323;
+  color: #fff;
+  font-size: 1rem;
+}
+
+@media (prefers-color-scheme: light) {
+  .observaciones-wrapper {
+    background: #fff;
+  }
+  .observacion-form select,
+  .observacion-form textarea {
+    background: #fff;
+    color: #213547;
+    border: 1px solid #646cff22;
+  }
+}
