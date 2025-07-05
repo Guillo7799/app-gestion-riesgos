@@ -16,7 +16,7 @@ export default function Dashboard() {
         <h2 className="sidebar-title">Panel</h2>
         <nav className="sidebar-nav">
           <NavLink
-            to="/dashboard"
+            to="/dashboard/graficos"
             end
             className={({ isActive }) => (isActive ? "active" : "")}
           >

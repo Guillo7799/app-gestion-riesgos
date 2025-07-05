@@ -7,6 +7,7 @@ import TratamientoRiesgos from "./pages/TratamientoRiesgos";
 import ListaTratamientos from "./pages/ListaTratamientos";
 import ValoracionActivos from "./pages/ValoracionActivos";
 import Observaciones from "./pages/Observaciones";
+import ReportePDF from "./components/ReportePDF";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/config";
 import { useEffect, useState } from "react";
@@ -37,6 +38,7 @@ function App() {
         {user && (
           <Route path="/dashboard" element={<Dashboard />}>
             <Route index element={<div>Bienvenido al Panel Principal</div>} />
+            <Route path="graficos" element={<ReportePDF />} />
             <Route path="activos" element={<ValoracionActivos />} />
             <Route
               path="identificacion-riesgos"
