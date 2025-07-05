@@ -46,6 +46,12 @@ export default function Dashboard() {
           >
             Lista de Tratamientos
           </NavLink>
+          <NavLink
+            to="/dashboard/observaciones"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            Observaciones / Recomendaciones
+          </NavLink>
         </nav>
         <button className="sidebar-logout" onClick={logout}>
           Cerrar sesión
