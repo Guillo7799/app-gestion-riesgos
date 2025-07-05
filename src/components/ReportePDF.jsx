@@ -3,6 +3,7 @@ import { db } from "../firebase/config";
 import { collection, getDocs } from "firebase/firestore";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { FileText } from "lucide-react";
 
 export default function ReportePDF() {
   const [tratamientos, setTratamientos] = useState([]);
@@ -35,12 +36,12 @@ export default function ReportePDF() {
         ],
       ],
       body: tratamientos.map((t) => [
-        t.activo || "",
+        t.activoNombre || "",
         t.riesgo || "",
-        t.controles || "",
+        t.controlesPropuestos || "",
         t.responsable || "",
         t.riesgoResidual ?? "",
-        t.fecha?.toDate().toLocaleDateString() || "",
+        t.fechaRegistro?.toDate().toLocaleDateString() || "",
       ]),
       styles: {
         fontSize: 10,
@@ -61,7 +62,7 @@ export default function ReportePDF() {
         onClick={generarPDF}
         className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-xl shadow transition"
       >
-        Generar Reporte
+        Generar PDF
       </button>
     </div>
   );
