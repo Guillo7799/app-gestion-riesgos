@@ -73,9 +73,11 @@ const Inicio = () => {
 
   return (
     <div className="dashboard-container">
-      <div className="dashboard-header">
-        <ReportePDF />
+      <div className="dashboard-header-flex-rel">
         <h1 className="dashboard-title">Monitoreo y Supervisión</h1>
+        <div className="pdf-btn-abs">
+          <ReportePDF />
+        </div>
       </div>
 
       <div className="charts-row">

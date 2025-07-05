@@ -4,8 +4,35 @@
 
 .dashboard-title {
   font-size: 1.8rem;
+  margin-bottom: 0;
+  text-align: left;
+}
+
+.dashboard-header-flex {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 2rem;
-  text-align: center;
+  gap: 2rem;
+}
+
+.dashboard-header-flex-rel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  min-height: 60px;
+}
+
+.pdf-btn-abs {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
 }
 
 .charts-row {
@@ -25,6 +52,9 @@
   border-radius: 14px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .chart-bar-full {
@@ -41,11 +71,6 @@
     align-items: center;
   }
 
-  .pie-chart {
-    align-content: center;
-    padding-left: 5%;
-  }
-
   .chart-box {
     max-width: 90%;
   }
@@ -56,4 +81,52 @@
   flex-direction: row;
   align-items: center;
   margin-bottom: 2rem;
+}
+
+.charts-row {
+  display: flex;
+  justify-content: center;
+  gap: 2rem; /* Espacio entre gráficos */
+  margin-bottom: 2rem;
+}
+
+.chart-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--login-bg, #1e1e1e);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+}
+
+.pdf-btn-red {
+  background: #e53935;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.5rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: 100%;
+  max-width: 200px;
+  margin: 0 auto;
+}
+
+.pdf-btn-red:hover {
+  background: #b71c1c;
+}
+
+.pdf-btn-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 0.5rem;
 }
