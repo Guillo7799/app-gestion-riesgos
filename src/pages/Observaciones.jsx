@@ -4,14 +4,22 @@ import { collection, getDocs, addDoc, Timestamp } from "firebase/firestore";
 import Swal from "sweetalert2";
 import "../styles/Observaciones.css";
 
+// Componente principal para registrar y mostrar observaciones/recomendaciones
 export default function Observaciones() {
+  // Estado para almacenar los riesgos disponibles
   const [riesgos, setRiesgos] = useState([]);
+  // Estado para el riesgo seleccionado en el formulario
   const [riesgoId, setRiesgoId] = useState("");
+  // Estado para el texto de la observación
   const [observacion, setObservacion] = useState("");
+  // Estado para la lista de observaciones registradas
   const [listaObservaciones, setListaObservaciones] = useState([]);
+  // Estado para la página actual de la paginación
   const [currentPage, setCurrentPage] = useState(1);
+  // Cantidad de observaciones por página
   const itemsPerPage = 5;
 
+  // Obtiene los riesgos desde Firestore al montar el componente
   useEffect(() => {
     const fetchRiesgos = async () => {
       const snapshot = await getDocs(collection(db, "riesgos"));
@@ -21,26 +29,31 @@ export default function Observaciones() {
     fetchRiesgos();
   }, []);
 
+  // Obtiene las observaciones desde Firestore al montar el componente
+  // y expone la función para refrescar el listado tras guardar
   useEffect(() => {
     const fetchObservaciones = async () => {
       const snapshot = await getDocs(collection(db, "observaciones"));
       const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       setListaObservaciones(data);
     };
-    // Hacemos fetchObservaciones accesible para handleSubmit
+    // Permite refrescar el listado tras guardar
     Observaciones.fetchObservaciones = fetchObservaciones;
     fetchObservaciones();
   }, []);
 
+  // Maneja el envío del formulario para registrar una observación
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!riesgoId || !observacion.trim()) {
       return Swal.fire("Error", "Completa todos los campos", "error");
     }
 
+    // Busca el riesgo seleccionado
     const riesgo = riesgos.find((r) => r.id === riesgoId);
 
     try {
+      // Guarda la observación en Firestore
       await addDoc(collection(db, "observaciones"), {
         riesgoId,
         riesgo: riesgo?.amenaza || "",
@@ -52,14 +65,14 @@ export default function Observaciones() {
       Swal.fire("Guardado", "Observación registrada", "success");
       setObservacion("");
       setRiesgoId("");
-      // Actualiza la lista de observaciones automáticamente
+      // Refresca el listado automáticamente
       await Observaciones.fetchObservaciones();
     } catch (error) {
       Swal.fire("Error", "No se pudo guardar", "error");
     }
   };
 
-  // Paginación para observaciones
+  // Lógica de paginación para mostrar solo 5 observaciones por página
   const totalPages = Math.ceil(listaObservaciones.length / itemsPerPage);
   const paginatedObservaciones = listaObservaciones.slice(
     (currentPage - 1) * itemsPerPage,
@@ -70,6 +83,7 @@ export default function Observaciones() {
     <div className="observaciones-wrapper">
       <h2>Comunicación y Consulta</h2>
 
+      {/* Formulario para registrar una observación */}
       <form onSubmit={handleSubmit} className="observacion-form">
         <div>
           <label>Selecciona un riesgo</label>
@@ -110,6 +124,7 @@ export default function Observaciones() {
 
       <h3>Observaciones registradas</h3>
 
+      {/* Listado paginado de observaciones */}
       {listaObservaciones.length === 0 ? (
         <p>No hay observaciones registradas.</p>
       ) : (
@@ -123,7 +138,7 @@ export default function Observaciones() {
               <small>{o.fecha?.toDate().toLocaleDateString()}</small>
             </div>
           ))}
-          {/* Paginación */}
+          {/* Controles de paginación */}
           {totalPages > 1 && (
             <div className="pagination">
               <button

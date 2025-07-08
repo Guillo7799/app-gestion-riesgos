@@ -5,9 +5,12 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { FileText } from "lucide-react";
 
+// Componente para generar y descargar un reporte PDF de los tratamientos de riesgo
 export default function ReportePDF() {
+  // Estado para almacenar los tratamientos obtenidos de Firestore
   const [tratamientos, setTratamientos] = useState([]);
 
+  // Obtiene los tratamientos desde Firestore al montar el componente
   useEffect(() => {
     const fetchData = async () => {
       const snapshot = await getDocs(collection(db, "tratamientos"));
@@ -17,12 +20,15 @@ export default function ReportePDF() {
     fetchData();
   }, []);
 
+  // Función que genera y descarga el PDF usando jsPDF y autoTable
   const generarPDF = () => {
     const doc = new jsPDF();
 
+    // Título del reporte
     doc.setFontSize(16);
     doc.text("Reporte de Tratamientos de Riesgo", 20, 20);
 
+    // Tabla con los datos de tratamientos
     autoTable(doc, {
       startY: 30,
       head: [
@@ -53,17 +59,20 @@ export default function ReportePDF() {
       },
     });
 
+    // Descarga el archivo PDF
     doc.save("reporte_tratamientos.pdf");
   };
 
   return (
     <div className="text-center my-8">
+      {/* Botón para generar y descargar el PDF */}
       <button
         onClick={generarPDF}
         className="pdf-btn-red"
         title="Descargar PDF"
       >
         <span className="pdf-btn-content">
+          {/* Ícono SVG de PDF */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"

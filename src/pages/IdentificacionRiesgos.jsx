@@ -10,7 +10,7 @@ import {
 import "../styles/IdentificacionRiesgos.css";
 import Swal from "sweetalert2";
 
-// Sugerencias por tipo de activo
+// Sugerencias automáticas por tipo/categoría de activo
 const SUGERENCIAS = {
   Router: {
     vulnerabilidades: [
@@ -140,27 +140,31 @@ const SUGERENCIAS = {
   },
 };
 
+// Componente para identificar y listar riesgos asociados a activos
 export default function IdentificacionRiesgos() {
-  const [activos, setActivos] = useState([]);
-  const [activoId, setActivoId] = useState("");
-  const [amenaza, setAmenaza] = useState("");
-  const [vulnerabilidad, setVulnerabilidad] = useState("");
-  const [controles, setControles] = useState("");
-  const [probabilidad, setProbabilidad] = useState(1);
-  const [impacto, setImpacto] = useState(1);
-  const [riesgos, setRiesgos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [vulnChips, setVulnChips] = useState([]);
-  const [controlChips, setControlChips] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
-  // Paginación para riesgos
+  // Estados para el formulario y la paginación
+  const [activos, setActivos] = useState([]); // Lista de activos
+  const [activoId, setActivoId] = useState(""); // Activo seleccionado
+  const [amenaza, setAmenaza] = useState(""); // Amenaza
+  const [vulnerabilidad, setVulnerabilidad] = useState(""); // Vulnerabilidad
+  const [controles, setControles] = useState(""); // Controles existentes
+  const [probabilidad, setProbabilidad] = useState(1); // Probabilidad
+  const [impacto, setImpacto] = useState(1); // Impacto
+  const [riesgos, setRiesgos] = useState([]); // Lista de riesgos registrados
+  const [loading, setLoading] = useState(true); // Estado de carga
+  const [vulnChips, setVulnChips] = useState([]); // Chips de vulnerabilidades sugeridas
+  const [controlChips, setControlChips] = useState([]); // Chips de controles sugeridos
+  const [currentPage, setCurrentPage] = useState(1); // Página actual para paginación
+  const itemsPerPage = 5; // Elementos por página
+
+  // Lógica de paginación para mostrar solo 5 riesgos por página
   const totalPages = Math.ceil(riesgos.length / itemsPerPage);
   const paginatedRiesgos = riesgos.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
+  // Obtiene los activos y riesgos desde Firestore al montar el componente
   const fetchActivos = async () => {
     const activosSnapshot = await getDocs(collection(db, "activos"));
     const activosData = activosSnapshot.docs.map((doc) => ({
@@ -184,8 +188,8 @@ export default function IdentificacionRiesgos() {
     fetchRiesgos();
   }, []);
 
+  // Sugerencias automáticas de vulnerabilidades y controles según activo/categoría
   useEffect(() => {
-    // Cuando cambia el activo, sugerir chips
     const activo = activos.find((a) => a.id === activoId);
     if (activo) {
       if (SUGERENCIAS[activo.nombre]) {
@@ -204,8 +208,10 @@ export default function IdentificacionRiesgos() {
     }
   }, [activoId, activos]);
 
+  // Calcula el nivel de riesgo
   const calcularRiesgo = () => probabilidad * impacto;
 
+  // Maneja el guardado de un nuevo riesgo
   const handleSave = async (e) => {
     e.preventDefault();
     const activo = activos.find((a) => a.id === activoId);
@@ -218,7 +224,6 @@ export default function IdentificacionRiesgos() {
       });
       return;
     }
-
     try {
       await addDoc(collection(db, "riesgos"), {
         activoId,
@@ -237,6 +242,7 @@ export default function IdentificacionRiesgos() {
         icon: "success",
         confirmButtonText: "OK",
       });
+      // Limpia los campos y recarga la lista
       setActivoId("");
       setAmenaza("");
       setVulnerabilidad("");
@@ -256,6 +262,7 @@ export default function IdentificacionRiesgos() {
     }
   };
 
+  // Maneja el borrado de un riesgo
   const handleDelete = async (id) => {
     if (!window.confirm("¿Seguro que deseas borrar este riesgo?")) return;
     await deleteDoc(doc(db, "riesgos", id));
@@ -264,6 +271,7 @@ export default function IdentificacionRiesgos() {
 
   return (
     <div className="identificacion-layout">
+      {/* Formulario para registrar un riesgo */}
       <form onSubmit={handleSave} className="identificacion-form">
         <h2>Identificación de Riesgos</h2>
         <div className="form-group">
@@ -295,6 +303,7 @@ export default function IdentificacionRiesgos() {
         </div>
         <div className="form-group">
           <label htmlFor="vulnerabilidad">Vulnerabilidad</label>
+          {/* Chips de vulnerabilidades sugeridas */}
           <div className="chips-container">
             {vulnChips.map((chip, idx) => (
               <span className="chip" key={chip}>
@@ -323,6 +332,7 @@ export default function IdentificacionRiesgos() {
         </div>
         <div className="form-group">
           <label htmlFor="controles">Controles existentes</label>
+          {/* Chips de controles sugeridos */}
           <div className="chips-container">
             {controlChips.map((chip, idx) => (
               <span className="chip" key={chip}>
@@ -379,6 +389,7 @@ export default function IdentificacionRiesgos() {
         </div>
         <button type="submit">Guardar riesgo</button>
       </form>
+      {/* Listado de riesgos registrados con paginación */}
       <div className="riesgos-list-panel">
         <h3>Riesgos registrados</h3>
         {loading ? (
@@ -398,6 +409,7 @@ export default function IdentificacionRiesgos() {
                     <span>Riesgo: {r.nivelRiesgo}</span>
                   </div>
                 </div>
+                {/* Botón para borrar riesgo */}
                 <button
                   className="borrar-riesgo"
                   onClick={() => handleDelete(r.id)}
@@ -407,7 +419,7 @@ export default function IdentificacionRiesgos() {
                 </button>
               </li>
             ))}
-            {/* Paginación */}
+            {/* Controles de paginación */}
             {totalPages > 1 && (
               <div className="pagination">
                 <button

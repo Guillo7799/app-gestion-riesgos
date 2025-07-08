@@ -3,9 +3,11 @@ import { auth } from "../firebase/config";
 import Swal from "sweetalert2";
 import "../styles/Dashboard.css";
 
+// Componente layout principal del dashboard
 export default function Dashboard() {
   const navigate = useNavigate();
 
+  // Maneja el cierre de sesión con confirmación
   const logout = async () => {
     const result = await Swal.fire({
       title: "¿Cerrar sesión?",
@@ -22,6 +24,7 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard-layout">
+      {/* Barra lateral de navegación */}
       <aside className="sidebar">
         <h2 className="sidebar-title">Panel</h2>
         <nav className="sidebar-nav">
@@ -63,10 +66,12 @@ export default function Dashboard() {
             Observaciones / Recomendaciones
           </NavLink>
         </nav>
+        {/* Botón de cierre de sesión */}
         <button className="sidebar-logout" onClick={logout}>
           Cerrar sesión
         </button>
       </aside>
+      {/* Contenido principal */}
       <main className="dashboard-content">
         <Outlet />
       </main>

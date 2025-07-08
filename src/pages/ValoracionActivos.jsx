@@ -10,17 +10,23 @@ import {
 import "../styles/ValoracionActivos.css";
 import Swal from "sweetalert2";
 
+// Componente para la valoración y registro de activos
 export default function ValoracionActivos() {
-  const [activo, setActivo] = useState("");
-  const [categoria, setCategoria] = useState("");
-  const [conf, setConf] = useState(1);
-  const [inte, setInte] = useState(1);
-  const [disp, setDisp] = useState(1);
+  // Estados para los campos del formulario de activos
+  const [activo, setActivo] = useState(""); // Nombre del activo
+  const [categoria, setCategoria] = useState(""); // Categoría del activo
+  const [conf, setConf] = useState(1); // Confidencialidad
+  const [inte, setInte] = useState(1); // Integridad
+  const [disp, setDisp] = useState(1); // Disponibilidad
+  // Estado para la lista de activos registrados
   const [activos, setActivos] = useState([]);
+  // Estado para mostrar loading mientras se cargan los activos
   const [loading, setLoading] = useState(true);
+  // Estados para la paginación
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
+  // Función para obtener los activos desde Firestore
   const fetchActivos = async () => {
     setLoading(true);
     const snapshot = await getDocs(collection(db, "activos"));
@@ -28,10 +34,12 @@ export default function ValoracionActivos() {
     setLoading(false);
   };
 
+  // Cargar activos al montar el componente
   useEffect(() => {
     fetchActivos();
   }, []);
 
+  // Maneja el guardado de un nuevo activo
   const handleSave = async (e) => {
     e.preventDefault();
     try {
@@ -44,7 +52,7 @@ export default function ValoracionActivos() {
         });
         return;
       }
-
+      // Guarda el activo en Firestore
       await addDoc(collection(db, "activos"), {
         nombre: activo,
         categoria,
@@ -53,13 +61,13 @@ export default function ValoracionActivos() {
         disponibilidad: disp,
         fechaRegistro: new Date(),
       });
-
       Swal.fire({
         title: "Éxito",
         text: "El activo fue registrado correctamente",
         icon: "success",
         confirmButtonText: "OK",
       });
+      // Limpia los campos y recarga la lista
       setActivo("");
       setCategoria("");
       setConf(1);
@@ -76,13 +84,14 @@ export default function ValoracionActivos() {
     }
   };
 
+  // Maneja el borrado de un activo
   const handleDelete = async (id) => {
     if (!window.confirm("¿Seguro que deseas borrar este activo?")) return;
     await deleteDoc(doc(db, "activos", id));
     fetchActivos();
   };
 
-  // Paginación para activos
+  // Lógica de paginación para mostrar solo 5 activos por página
   const totalPages = Math.ceil(activos.length / itemsPerPage);
   const paginatedActivos = activos.slice(
     (currentPage - 1) * itemsPerPage,
@@ -91,6 +100,7 @@ export default function ValoracionActivos() {
 
   return (
     <div className="valoracion-layout">
+      {/* Formulario para registrar un activo */}
       <form onSubmit={handleSave} className="valoracion-form">
         <h2>Registro de Activos</h2>
         <div className="form-group">
@@ -160,6 +170,7 @@ export default function ValoracionActivos() {
         </div>
         <button type="submit">Guardar activo</button>
       </form>
+      {/* Listado de activos registrados con paginación */}
       <div className="activos-list-panel">
         <h3>Activos registrados</h3>
         {loading ? (
@@ -189,7 +200,7 @@ export default function ValoracionActivos() {
                 </li>
               ))}
             </ul>
-            {/* Paginación */}
+            {/* Controles de paginación */}
             {totalPages > 1 && (
               <div className="pagination">
                 <button

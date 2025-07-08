@@ -5,11 +5,14 @@ import { useNavigate, Link } from "react-router-dom";
 import "../styles/Login.css";
 import Swal from "sweetalert2";
 
+// Componente para registrar un nuevo usuario
 export default function Register() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // Estados para los campos del formulario
+  const [email, setEmail] = useState(""); // Correo electrónico
+  const [password, setPassword] = useState(""); // Contraseña
   const navigate = useNavigate();
 
+  // Maneja el registro de usuario con Firebase Auth
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
@@ -22,7 +25,7 @@ export default function Register() {
         confirmButtonText: "OK",
       });
     } catch (error) {
-      //alert("Error al registrar: " + error.message);
+      // Muestra alerta de error si falla el registro
       Swal.fire({
         title: "Error",
         text: "Error al registrar el usuario" + error.message,
@@ -42,6 +45,7 @@ export default function Register() {
         </p>
       </div>
       <div className="login-right">
+        {/* Formulario de registro */}
         <form onSubmit={handleRegister} className="login-form">
           <h2>Registro</h2>
           <label htmlFor="register-email">Correo</label>

@@ -5,17 +5,20 @@ import "../styles/TratamientoRiesgos.css";
 import Swal from "sweetalert2";
 import emailjs from "@emailjs/browser";
 
+// Componente para registrar y tratar riesgos identificados
 export default function TratamientoRiesgos() {
-  const [riesgos, setRiesgos] = useState([]);
-  const [riesgoId, setRiesgoId] = useState("");
-  const [estrategia, setEstrategia] = useState("");
-  const [controlesPropuestos, setControlesPropuestos] = useState("");
-  const [responsable, setResponsable] = useState("");
-  const [resProbabilidad, setResProbabilidad] = useState(1);
-  const [resImpacto, setResImpacto] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  // Estados para el formulario y la paginación
+  const [riesgos, setRiesgos] = useState([]); // Lista de riesgos disponibles
+  const [riesgoId, setRiesgoId] = useState(""); // Riesgo seleccionado
+  const [estrategia, setEstrategia] = useState(""); // Estrategia de tratamiento
+  const [controlesPropuestos, setControlesPropuestos] = useState(""); // Controles propuestos
+  const [responsable, setResponsable] = useState(""); // Correo del responsable
+  const [resProbabilidad, setResProbabilidad] = useState(1); // Probabilidad residual
+  const [resImpacto, setResImpacto] = useState(1); // Impacto residual
+  const [currentPage, setCurrentPage] = useState(1); // Página actual para paginación
+  const itemsPerPage = 5; // Elementos por página
 
+  // Obtiene los riesgos desde Firestore al montar el componente
   useEffect(() => {
     const fetchRiesgos = async () => {
       const snapshot = await getDocs(collection(db, "riesgos"));
@@ -28,12 +31,14 @@ export default function TratamientoRiesgos() {
     fetchRiesgos();
   }, []);
 
+  // Maneja el envío del formulario para guardar tratamiento y enviar correo
   const handleSubmit = async (e) => {
     e.preventDefault();
     const riesgo = riesgos.find((r) => r.id === riesgoId);
     if (!riesgo) return alert("Selecciona un riesgo");
 
     try {
+      // Guarda el tratamiento en Firestore
       await addDoc(collection(db, "tratamientos"), {
         riesgoId,
         riesgo: riesgo.amenaza,
@@ -47,7 +52,7 @@ export default function TratamientoRiesgos() {
         resImpacto,
       });
 
-      // Enviar email al responsable
+      // Enviar email al responsable usando EmailJS
       const templateParams = {
         to_email: responsable,
         riesgo: riesgo.amenaza,
@@ -70,6 +75,7 @@ export default function TratamientoRiesgos() {
         icon: "success",
         confirmButtonText: "OK",
       });
+      // Limpia los campos del formulario
       setRiesgoId("");
       setEstrategia("");
       setControlesPropuestos("");
@@ -84,7 +90,7 @@ export default function TratamientoRiesgos() {
     }
   };
 
-  // Paginación para riesgos
+  // Lógica de paginación para mostrar solo 5 riesgos por página en el selector
   const totalPages = Math.ceil(riesgos.length / itemsPerPage);
   const paginatedRiesgos = riesgos.slice(
     (currentPage - 1) * itemsPerPage,
@@ -109,7 +115,7 @@ export default function TratamientoRiesgos() {
             </option>
           ))}
         </select>
-        {/* Paginación */}
+        {/* Controles de paginación para el selector de riesgos */}
         {totalPages > 1 && (
           <div className="pagination">
             <button
