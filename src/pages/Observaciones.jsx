@@ -9,6 +9,8 @@ export default function Observaciones() {
   const [riesgoId, setRiesgoId] = useState("");
   const [observacion, setObservacion] = useState("");
   const [listaObservaciones, setListaObservaciones] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   useEffect(() => {
     const fetchRiesgos = async () => {
@@ -25,6 +27,8 @@ export default function Observaciones() {
       const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       setListaObservaciones(data);
     };
+    // Hacemos fetchObservaciones accesible para handleSubmit
+    Observaciones.fetchObservaciones = fetchObservaciones;
     fetchObservaciones();
   }, []);
 
@@ -48,10 +52,19 @@ export default function Observaciones() {
       Swal.fire("Guardado", "Observación registrada", "success");
       setObservacion("");
       setRiesgoId("");
+      // Actualiza la lista de observaciones automáticamente
+      await Observaciones.fetchObservaciones();
     } catch (error) {
       Swal.fire("Error", "No se pudo guardar", "error");
     }
   };
+
+  // Paginación para observaciones
+  const totalPages = Math.ceil(listaObservaciones.length / itemsPerPage);
+  const paginatedObservaciones = listaObservaciones.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <div className="observaciones-wrapper">
@@ -100,15 +113,46 @@ export default function Observaciones() {
       {listaObservaciones.length === 0 ? (
         <p>No hay observaciones registradas.</p>
       ) : (
-        listaObservaciones.map((o) => (
-          <div key={o.id} className="observacion-card">
-            <p>
-              <strong>{o.activo}</strong> — {o.riesgo}
-            </p>
-            <p>{o.texto}</p>
-            <small>{o.fecha?.toDate().toLocaleDateString()}</small>
-          </div>
-        ))
+        <>
+          {paginatedObservaciones.map((o) => (
+            <div key={o.id} className="observacion-card">
+              <p>
+                <strong>{o.activo}</strong> — {o.riesgo}
+              </p>
+              <p>{o.texto}</p>
+              <small>{o.fecha?.toDate().toLocaleDateString()}</small>
+            </div>
+          ))}
+          {/* Paginación */}
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button
+                type="button"
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+              >
+                Anterior
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => (
+                <button
+                  key={i + 1}
+                  type="button"
+                  className={currentPage === i + 1 ? "active" : ""}
+                  onClick={() => setCurrentPage(i + 1)}
+                >
+                  {i + 1}
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+              >
+                Siguiente
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
