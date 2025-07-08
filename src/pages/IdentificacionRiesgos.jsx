@@ -8,6 +8,137 @@ import {
   doc,
 } from "firebase/firestore";
 import "../styles/IdentificacionRiesgos.css";
+import Swal from "sweetalert2";
+
+// Sugerencias por tipo de activo
+const SUGERENCIAS = {
+  Router: {
+    vulnerabilidades: [
+      "Firmware sin parchear",
+      "Puertos abiertos",
+      "Malware en router",
+      "Configuración por defecto",
+    ],
+    controles: [
+      "Actualización regular de firmware",
+      "Segmentación de red",
+      "Control de acceso físico",
+      "Configuración segura de dispositivos",
+    ],
+  },
+  Infraestructura: {
+    vulnerabilidades: [
+      "Firmware sin actualizar",
+      "Puertos abiertos innecesarios",
+      "Configuración por defecto",
+      "Acceso físico no controlado",
+    ],
+    controles: [
+      "Actualización regular de firmware",
+      "Segmentación de red",
+      "Control de acceso físico",
+      "Configuración segura de dispositivos",
+    ],
+  },
+  "Personas - Legal": {
+    vulnerabilidades: [
+      "Ingeniería social (phishing)",
+      "Contraseñas débiles",
+      "Falta de formación en seguridad",
+      "Acceso no autorizado a información",
+    ],
+    controles: [
+      "Capacitación en ciberseguridad",
+      "Políticas de contraseñas robustas",
+      "Doble factor de autenticación",
+      "Restricción de acceso según rol",
+    ],
+  },
+  "Personas - Ventas": {
+    vulnerabilidades: [
+      "Ingeniería social (phishing)",
+      "Contraseñas débiles",
+      "Falta de formación en seguridad",
+      "Acceso no autorizado a información",
+    ],
+    controles: [
+      "Capacitación en ciberseguridad",
+      "Políticas de contraseñas robustas",
+      "Doble factor de autenticación",
+      "Restricción de acceso según rol",
+    ],
+  },
+  "Personas - Marketing": {
+    vulnerabilidades: [
+      "Ingeniería social (phishing)",
+      "Contraseñas débiles",
+      "Falta de formación en seguridad",
+      "Acceso no autorizado a información",
+    ],
+    controles: [
+      "Capacitación en ciberseguridad",
+      "Políticas de contraseñas robustas",
+      "Doble factor de autenticación",
+      "Restricción de acceso según rol",
+    ],
+  },
+  "Personas - IT": {
+    vulnerabilidades: [
+      "Ingeniería social (phishing)",
+      "Contraseñas débiles",
+      "Falta de formación en seguridad",
+      "Acceso no autorizado a información",
+    ],
+    controles: [
+      "Capacitación en ciberseguridad",
+      "Políticas de contraseñas robustas",
+      "Doble factor de autenticación",
+      "Restricción de acceso según rol",
+    ],
+  },
+  Aplicaciones: {
+    vulnerabilidades: [
+      "Inyección de código (SQL, XSS)",
+      "Gestión inadecuada de sesiones",
+      "Componentes desactualizados",
+      "Exposición de datos sensibles",
+    ],
+    controles: [
+      "Validación de entradas",
+      "Actualización de dependencias",
+      "Gestión segura de sesiones",
+      "Cifrado de datos sensibles",
+    ],
+  },
+  Información: {
+    vulnerabilidades: [
+      "Datos sin cifrar",
+      "Acceso no autorizado",
+      "Pérdida de información",
+      "Copias de seguridad inexistentes",
+    ],
+    controles: [
+      "Cifrado de información",
+      "Políticas de acceso a datos",
+      "Copias de seguridad periódicas",
+      "Clasificación de la información",
+    ],
+  },
+  Logística: {
+    vulnerabilidades: [
+      "Falta de trazabilidad",
+      "Manipulación de inventario",
+      "Acceso no autorizado a sistemas logísticos",
+      "Robo de herramientas de transporte",
+    ],
+    controles: [
+      "Registro y monitoreo de inventario",
+      "Control de acceso a sistemas logísticos",
+      "Evaluación de proveedores",
+      "Aseguración de activos logísticos",
+    ],
+  },
+};
 
 export default function IdentificacionRiesgos() {
   const [activos, setActivos] = useState([]);
@@ -19,6 +150,8 @@ export default function IdentificacionRiesgos() {
   const [impacto, setImpacto] = useState(1);
   const [riesgos, setRiesgos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [vulnChips, setVulnChips] = useState([]);
+  const [controlChips, setControlChips] = useState([]);
 
   const fetchActivos = async () => {
     const activosSnapshot = await getDocs(collection(db, "activos"));
@@ -43,35 +176,75 @@ export default function IdentificacionRiesgos() {
     fetchRiesgos();
   }, []);
 
+  useEffect(() => {
+    // Cuando cambia el activo, sugerir chips
+    const activo = activos.find((a) => a.id === activoId);
+    if (activo) {
+      if (SUGERENCIAS[activo.nombre]) {
+        setVulnChips(SUGERENCIAS[activo.nombre].vulnerabilidades);
+        setControlChips(SUGERENCIAS[activo.nombre].controles);
+      } else if (SUGERENCIAS[activo.categoria]) {
+        setVulnChips(SUGERENCIAS[activo.categoria].vulnerabilidades);
+        setControlChips(SUGERENCIAS[activo.categoria].controles);
+      } else {
+        setVulnChips([]);
+        setControlChips([]);
+      }
+    } else {
+      setVulnChips([]);
+      setControlChips([]);
+    }
+  }, [activoId, activos]);
+
   const calcularRiesgo = () => probabilidad * impacto;
 
   const handleSave = async (e) => {
     e.preventDefault();
     const activo = activos.find((a) => a.id === activoId);
-    if (!activo) return alert("Debes seleccionar un activo.");
+    if (!activo) {
+      Swal.fire({
+        title: "Error",
+        text: "Debes seleccionar un activo.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+      return;
+    }
 
     try {
       await addDoc(collection(db, "riesgos"), {
         activoId,
         activoNombre: activo.nombre,
         amenaza,
-        vulnerabilidad,
-        controlesExistentes: controles,
+        vulnerabilidad: [vulnerabilidad, ...vulnChips].filter(Boolean).join(", "),
+        controlesExistentes: [controles, ...controlChips].filter(Boolean).join(", "),
         probabilidad,
         impacto,
         nivelRiesgo: calcularRiesgo(),
         fechaRegistro: new Date(),
       });
-      alert("Riesgo registrado correctamente.");
+      Swal.fire({
+        title: "Éxito",
+        text: "Riesgo registrado correctamente.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
       setActivoId("");
       setAmenaza("");
       setVulnerabilidad("");
       setControles("");
+      setVulnChips([]);
+      setControlChips([]);
       setProbabilidad(1);
       setImpacto(1);
       fetchRiesgos();
     } catch (err) {
-      alert("Error al guardar riesgo: " + err.message);
+      Swal.fire({
+        title: "Error",
+        text: "Error al guardar riesgo: " + err.message,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 
@@ -114,23 +287,57 @@ export default function IdentificacionRiesgos() {
         </div>
         <div className="form-group">
           <label htmlFor="vulnerabilidad">Vulnerabilidad</label>
+          <div className="chips-container">
+            {vulnChips.map((chip, idx) => (
+              <span className="chip" key={chip}>
+                {chip}
+                <button
+                  type="button"
+                  onClick={() =>
+                    setVulnChips(
+                      vulnChips.filter((c, i) => i !== idx)
+                    )
+                  }
+                  className="chip-x"
+                >
+                  ×
+                </button>
+              </span>
+            ))}
+          </div>
           <input
             id="vulnerabilidad"
             type="text"
             placeholder="Vulnerabilidad"
             value={vulnerabilidad}
             onChange={(e) => setVulnerabilidad(e.target.value)}
-            required
           />
         </div>
         <div className="form-group">
           <label htmlFor="controles">Controles existentes</label>
+          <div className="chips-container">
+            {controlChips.map((chip, idx) => (
+              <span className="chip" key={chip}>
+                {chip}
+                <button
+                  type="button"
+                  onClick={() =>
+                    setControlChips(
+                      controlChips.filter((c, i) => i !== idx)
+                    )
+                  }
+                  className="chip-x"
+                >
+                  ×
+                </button>
+              </span>
+            ))}
+          </div>
           <textarea
             id="controles"
             placeholder="Controles existentes"
             value={controles}
             onChange={(e) => setControles(e.target.value)}
-            required
           />
         </div>
         <div className="form-group-inline">

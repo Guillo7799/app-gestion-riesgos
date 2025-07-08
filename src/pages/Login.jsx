@@ -4,6 +4,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/config";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/Login.css";
+import Swal from "sweetalert2";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,7 +17,12 @@ export default function Login() {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/dashboard");
     } catch (error) {
-      alert("Error al iniciar sesión: " + error.message);
+      Swal.fire({
+        title: "Error",
+        text: "Error al iniciar sesión: " + error.message,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 

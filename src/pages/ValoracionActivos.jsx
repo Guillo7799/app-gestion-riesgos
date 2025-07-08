@@ -34,7 +34,12 @@ export default function ValoracionActivos() {
     e.preventDefault();
     try {
       if (!categoria) {
-        alert("Por favor selecciona una categoría.");
+        Swal.fire({
+          title: "Error",
+          text: "Por favor selecciona una categoría.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
         return;
       }
 
@@ -59,11 +64,10 @@ export default function ValoracionActivos() {
       setInte(1);
       setDisp(1);
       fetchActivos();
-    } catch (e) {
-      //alert("Error al guardar: " + e.message);
+    } catch (err) {
       Swal.fire({
         title: "Error",
-        text: "El activo no se pudo registrar" + e.message,
+        text: "Error al registrar activo: " + err.message,
         icon: "error",
         confirmButtonText: "OK",
       });
