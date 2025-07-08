@@ -22,10 +22,13 @@ import Swal from "sweetalert2";
 
 const COLORS = ["#0088FE", "#FFBB28", "#FF4444", "#00C49F"];
 
+// Página de inicio del dashboard: muestra gráficos y acceso a reporte PDF
 const Inicio = () => {
-  const [riesgosData, setRiesgosData] = useState([]);
-  const [estrategiasData, setEstrategiasData] = useState([]);
+  // Estados para los datos de los gráficos
+  const [riesgosData, setRiesgosData] = useState([]); // Distribución de riesgos
+  const [estrategiasData, setEstrategiasData] = useState([]); // Estrategias de tratamiento
 
+  // Estado para la evolución temporal de riesgos (ejemplo)
   const [riesgosTimeline, setRiesgosTimeline] = useState([
     { fecha: "Jun", riesgos: 5 },
     { fecha: "Jul", riesgos: 9 },
@@ -33,12 +36,13 @@ const Inicio = () => {
     { fecha: "Sep", riesgos: 11 },
   ]);
 
+  // Obtiene los datos de riesgos y estrategias desde Firestore
   useEffect(() => {
     const fetchData = async () => {
       try {
         const snap = await getDocs(collection(db, "riesgos"));
         const niveles = { Bajo: 0, Medio: 0, Alto: 0 };
-
+        // Clasifica los riesgos por nivel
         snap.docs.forEach((doc) => {
           const r = doc.data();
           const valor = Number(r.nivelRiesgo);
@@ -46,7 +50,6 @@ const Inicio = () => {
           else if (valor <= 15) niveles.Medio++;
           else niveles.Alto++;
         });
-
         setRiesgosData(
           Object.entries(niveles).map(([name, value]) => ({ name, value }))
         );
@@ -64,12 +67,11 @@ const Inicio = () => {
       try {
         const snap = await getDocs(collection(db, "tratamientos"));
         const estrategias = { mitigar: 0, aceptar: 0, transferir: 0, evitar: 0 };
-
+        // Clasifica los tratamientos por estrategia
         snap.docs.forEach((doc) => {
           const tipo = doc.data().estrategia?.toLowerCase();
           if (estrategias[tipo] !== undefined) estrategias[tipo]++;
         });
-
         setEstrategiasData(
           Object.entries(estrategias).map(([name, value]) => ({
             name: name.charAt(0).toUpperCase() + name.slice(1),
@@ -92,6 +94,7 @@ const Inicio = () => {
 
   return (
     <div className="dashboard-container">
+      {/* Header y botón de PDF */}
       <div className="dashboard-header-flex-rel">
         <h1 className="dashboard-title">Monitoreo y Supervisión</h1>
         <div className="pdf-btn-abs">
@@ -99,6 +102,7 @@ const Inicio = () => {
         </div>
       </div>
 
+      {/* Gráficos de riesgos y estrategias */}
       <div className="charts-row">
         <div className="chart-box">
           <h2>Distribución de Niveles de Riesgo</h2>
@@ -145,6 +149,7 @@ const Inicio = () => {
         </div>
       </div>
 
+      {/* Gráficos adicionales: resumen y evolución */}
       <div className="charts-row">
         <div className="chart-box">
           <h2>Resumen General</h2>

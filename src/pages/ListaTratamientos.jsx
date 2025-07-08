@@ -4,11 +4,15 @@ import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import Swal from "sweetalert2";
 import "../styles/ListaTratamientos.css";
 
+// Componente para mostrar la lista de tratamientos registrados
 export default function ListaTratamientos() {
+  // Estado para la lista de tratamientos
   const [tratamientos, setTratamientos] = useState([]);
+  // Estado para la página actual de la paginación
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 5; // Elementos por página
 
+  // Obtiene los tratamientos desde Firestore al montar el componente
   const fetchTratamientos = async () => {
     const snapshot = await getDocs(collection(db, "tratamientos"));
     const data = snapshot.docs.map((doc) => ({
@@ -22,6 +26,7 @@ export default function ListaTratamientos() {
     fetchTratamientos();
   }, []);
 
+  // Maneja el borrado de un tratamiento
   const handleDelete = async (id) => {
     const result = await Swal.fire({
       title: "¿Seguro que deseas borrar este tratamiento?",
@@ -50,6 +55,7 @@ export default function ListaTratamientos() {
     }
   };
 
+  // Lógica de paginación para mostrar solo 5 tratamientos por página
   const totalPages = Math.ceil(tratamientos.length / itemsPerPage);
   const paginatedTratamientos = tratamientos.slice(
     (currentPage - 1) * itemsPerPage,
@@ -91,6 +97,7 @@ export default function ListaTratamientos() {
                     : "-"}
                 </div>
               </div>
+              {/* Botón para borrar tratamiento */}
               <button
                 className="borrar-tratamiento"
                 onClick={() => handleDelete(t.id)}
@@ -102,6 +109,7 @@ export default function ListaTratamientos() {
           ))}
         </div>
       )}
+      {/* Controles de paginación */}
       {totalPages > 1 && (
         <div className="pagination">
           <button

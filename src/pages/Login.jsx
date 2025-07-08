@@ -6,17 +6,21 @@ import { useNavigate, Link } from "react-router-dom";
 import "../styles/Login.css";
 import Swal from "sweetalert2";
 
+// Componente para el inicio de sesión de usuarios
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // Estados para los campos del formulario
+  const [email, setEmail] = useState(""); // Correo electrónico
+  const [password, setPassword] = useState(""); // Contraseña
   const navigate = useNavigate();
 
+  // Maneja el inicio de sesión con Firebase Auth
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/dashboard");
     } catch (error) {
+      // Muestra alerta de error si falla el login
       Swal.fire({
         title: "Error",
         text: "Error al iniciar sesión: " + error.message,
@@ -36,6 +40,7 @@ export default function Login() {
         </p>
       </div>
       <div className="login-right">
+        {/* Formulario de inicio de sesión */}
         <form onSubmit={handleLogin} className="login-form">
           <h2>Iniciar Sesión</h2>
           <input
