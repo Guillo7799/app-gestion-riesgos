@@ -13,6 +13,8 @@ export default function TratamientoRiesgos() {
   const [responsable, setResponsable] = useState("");
   const [resProbabilidad, setResProbabilidad] = useState(1);
   const [resImpacto, setResImpacto] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   useEffect(() => {
     const fetchRiesgos = async () => {
@@ -82,6 +84,13 @@ export default function TratamientoRiesgos() {
     }
   };
 
+  // Paginación para riesgos
+  const totalPages = Math.ceil(riesgos.length / itemsPerPage);
+  const paginatedRiesgos = riesgos.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
     <form onSubmit={handleSubmit} className="tratamiento-form">
       <h2>Tratamiento del Riesgo</h2>
@@ -94,12 +103,41 @@ export default function TratamientoRiesgos() {
           required
         >
           <option value="">-- Selecciona un riesgo --</option>
-          {riesgos.map((r) => (
+          {paginatedRiesgos.map((r) => (
             <option key={r.id} value={r.id}>
               {r.activoNombre} - {r.amenaza}
             </option>
           ))}
         </select>
+        {/* Paginación */}
+        {totalPages > 1 && (
+          <div className="pagination">
+            <button
+              type="button"
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+            >
+              Anterior
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i + 1}
+                type="button"
+                className={currentPage === i + 1 ? "active" : ""}
+                onClick={() => setCurrentPage(i + 1)}
+              >
+                {i + 1}
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+            >
+              Siguiente
+            </button>
+          </div>
+        )}
       </div>
       <div className="form-group">
         <label htmlFor="estrategia">Estrategia</label>

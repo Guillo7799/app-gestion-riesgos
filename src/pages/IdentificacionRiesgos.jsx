@@ -152,6 +152,14 @@ export default function IdentificacionRiesgos() {
   const [loading, setLoading] = useState(true);
   const [vulnChips, setVulnChips] = useState([]);
   const [controlChips, setControlChips] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+  // Paginación para riesgos
+  const totalPages = Math.ceil(riesgos.length / itemsPerPage);
+  const paginatedRiesgos = riesgos.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const fetchActivos = async () => {
     const activosSnapshot = await getDocs(collection(db, "activos"));
@@ -379,7 +387,7 @@ export default function IdentificacionRiesgos() {
           <p>No hay riesgos registrados.</p>
         ) : (
           <ul className="riesgos-list">
-            {riesgos.map((r) => (
+            {paginatedRiesgos.map((r) => (
               <li key={r.id} className="riesgo-item">
                 <div>
                   <strong>{r.activoNombre}</strong> - {r.amenaza}{" "}
@@ -399,6 +407,35 @@ export default function IdentificacionRiesgos() {
                 </button>
               </li>
             ))}
+            {/* Paginación */}
+            {totalPages > 1 && (
+              <div className="pagination">
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                >
+                  Anterior
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => (
+                  <button
+                    key={i + 1}
+                    type="button"
+                    className={currentPage === i + 1 ? "active" : ""}
+                    onClick={() => setCurrentPage(i + 1)}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                >
+                  Siguiente
+                </button>
+              </div>
+            )}
           </ul>
         )}
       </div>

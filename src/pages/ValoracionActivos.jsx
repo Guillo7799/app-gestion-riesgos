@@ -18,6 +18,8 @@ export default function ValoracionActivos() {
   const [disp, setDisp] = useState(1);
   const [activos, setActivos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const fetchActivos = async () => {
     setLoading(true);
@@ -79,6 +81,13 @@ export default function ValoracionActivos() {
     await deleteDoc(doc(db, "activos", id));
     fetchActivos();
   };
+
+  // Paginación para activos
+  const totalPages = Math.ceil(activos.length / itemsPerPage);
+  const paginatedActivos = activos.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <div className="valoracion-layout">
@@ -158,23 +167,58 @@ export default function ValoracionActivos() {
         ) : activos.length === 0 ? (
           <p>No hay activos registrados.</p>
         ) : (
-          <ul className="activos-list">
-            {activos.map((a) => (
-              <li key={a.id} className="activo-item">
-                <div>
-                  <strong>{a.nombre}</strong>{" "}
-                  <span className="categoria">({a.categoria})</span>
-                </div>
+          <>
+            <ul className="activos-list">
+              {paginatedActivos.map((a) => (
+                <li key={a.id} className="activo-item">
+                  <div>
+                    <strong>{a.nombre}</strong> ({a.categoria})
+                    <div className="activo-detalles">
+                      <span>Conf: {a.confidencialidad}</span> |{" "}
+                      <span>Int: {a.integridad}</span> |{" "}
+                      <span>Disp: {a.disponibilidad}</span>
+                    </div>
+                  </div>
+                  <button
+                    className="borrar-activo"
+                    onClick={() => handleDelete(a.id)}
+                    title="Borrar activo"
+                  >
+                    🗑️
+                  </button>
+                </li>
+              ))}
+            </ul>
+            {/* Paginación */}
+            {totalPages > 1 && (
+              <div className="pagination">
                 <button
-                  className="borrar-activo"
-                  onClick={() => handleDelete(a.id)}
-                  title="Borrar activo"
+                  type="button"
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
                 >
-                  🗑️
+                  Anterior
                 </button>
-              </li>
-            ))}
-          </ul>
+                {Array.from({ length: totalPages }, (_, i) => (
+                  <button
+                    key={i + 1}
+                    type="button"
+                    className={currentPage === i + 1 ? "active" : ""}
+                    onClick={() => setCurrentPage(i + 1)}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                >
+                  Siguiente
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

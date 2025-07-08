@@ -6,6 +6,8 @@ import "../styles/ListaTratamientos.css";
 
 export default function ListaTratamientos() {
   const [tratamientos, setTratamientos] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const fetchTratamientos = async () => {
     const snapshot = await getDocs(collection(db, "tratamientos"));
@@ -48,6 +50,12 @@ export default function ListaTratamientos() {
     }
   };
 
+  const totalPages = Math.ceil(tratamientos.length / itemsPerPage);
+  const paginatedTratamientos = tratamientos.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
     <div className="tratamientos-panel">
       <h2>Tratamientos Registrados</h2>
@@ -55,7 +63,7 @@ export default function ListaTratamientos() {
         <div className="no-tratamientos">No hay tratamientos registrados.</div>
       ) : (
         <div className="tratamientos-list">
-          {tratamientos.map((t) => (
+          {paginatedTratamientos.map((t) => (
             <div className="tratamiento-card" key={t.id}>
               <div className="tratamiento-header">
                 <span className="tratamiento-activo">{t.activoNombre}</span>
@@ -92,6 +100,25 @@ export default function ListaTratamientos() {
               </button>
             </div>
           ))}
+        </div>
+      )}
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+          >
+            &lt;
+          </button>
+          <span>
+            Página {currentPage} de {totalPages}
+          </span>
+          <button
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            disabled={currentPage === totalPages}
+          >
+            &gt;
+          </button>
         </div>
       )}
     </div>
