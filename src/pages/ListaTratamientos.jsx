@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { db } from "../firebase/config";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import Swal from "sweetalert2";
 import "../styles/ListaTratamientos.css";
 
 export default function ListaTratamientos() {
@@ -20,9 +21,31 @@ export default function ListaTratamientos() {
   }, []);
 
   const handleDelete = async (id) => {
-    if (!window.confirm("¿Seguro que deseas borrar este tratamiento?")) return;
-    await deleteDoc(doc(db, "tratamientos", id));
-    fetchTratamientos();
+    const result = await Swal.fire({
+      title: "¿Seguro que deseas borrar este tratamiento?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, borrar",
+      cancelButtonText: "Cancelar",
+    });
+    if (!result.isConfirmed) return;
+    try {
+      await deleteDoc(doc(db, "tratamientos", id));
+      await fetchTratamientos();
+      Swal.fire({
+        title: "Eliminado",
+        text: "Tratamiento eliminado correctamente.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+    } catch (err) {
+      Swal.fire({
+        title: "Error",
+        text: "No se pudo eliminar el tratamiento.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
 
   return (

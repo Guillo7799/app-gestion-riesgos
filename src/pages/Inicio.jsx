@@ -18,6 +18,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/config";
 import ReportePDF from "../components/ReportePDF";
 import "../styles/Inicio.css";
+import Swal from "sweetalert2";
 
 const COLORS = ["#0088FE", "#FFBB28", "#FF4444", "#00C49F"];
 
@@ -34,37 +35,55 @@ const Inicio = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const snap = await getDocs(collection(db, "riesgos"));
-      const niveles = { Bajo: 0, Medio: 0, Alto: 0 };
+      try {
+        const snap = await getDocs(collection(db, "riesgos"));
+        const niveles = { Bajo: 0, Medio: 0, Alto: 0 };
 
-      snap.docs.forEach((doc) => {
-        const r = doc.data();
-        const valor = Number(r.nivelRiesgo);
-        if (valor <= 6) niveles.Bajo++;
-        else if (valor <= 15) niveles.Medio++;
-        else niveles.Alto++;
-      });
+        snap.docs.forEach((doc) => {
+          const r = doc.data();
+          const valor = Number(r.nivelRiesgo);
+          if (valor <= 6) niveles.Bajo++;
+          else if (valor <= 15) niveles.Medio++;
+          else niveles.Alto++;
+        });
 
-      setRiesgosData(
-        Object.entries(niveles).map(([name, value]) => ({ name, value }))
-      );
+        setRiesgosData(
+          Object.entries(niveles).map(([name, value]) => ({ name, value }))
+        );
+      } catch (err) {
+        Swal.fire({
+          title: "Error",
+          text: "No se pudieron cargar los datos de riesgos",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
     };
 
     const fetchEstrategias = async () => {
-      const snap = await getDocs(collection(db, "tratamientos"));
-      const estrategias = { mitigar: 0, aceptar: 0, transferir: 0, evitar: 0 };
+      try {
+        const snap = await getDocs(collection(db, "tratamientos"));
+        const estrategias = { mitigar: 0, aceptar: 0, transferir: 0, evitar: 0 };
 
-      snap.docs.forEach((doc) => {
-        const tipo = doc.data().estrategia?.toLowerCase();
-        if (estrategias[tipo] !== undefined) estrategias[tipo]++;
-      });
+        snap.docs.forEach((doc) => {
+          const tipo = doc.data().estrategia?.toLowerCase();
+          if (estrategias[tipo] !== undefined) estrategias[tipo]++;
+        });
 
-      setEstrategiasData(
-        Object.entries(estrategias).map(([name, value]) => ({
-          name: name.charAt(0).toUpperCase() + name.slice(1),
-          value,
-        }))
-      );
+        setEstrategiasData(
+          Object.entries(estrategias).map(([name, value]) => ({
+            name: name.charAt(0).toUpperCase() + name.slice(1),
+            value,
+          }))
+        );
+      } catch (err) {
+        Swal.fire({
+          title: "Error",
+          text: "No se pudieron cargar los datos de estrategias",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
     };
 
     fetchData();

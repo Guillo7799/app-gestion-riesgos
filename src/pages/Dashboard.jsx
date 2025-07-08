@@ -1,11 +1,21 @@
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { auth } from "../firebase/config";
+import Swal from "sweetalert2";
 import "../styles/Dashboard.css";
 
 export default function Dashboard() {
   const navigate = useNavigate();
 
   const logout = async () => {
+    const result = await Swal.fire({
+      title: "¿Cerrar sesión?",
+      text: "¿Estás seguro que deseas salir?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, salir",
+      cancelButtonText: "Cancelar",
+    });
+    if (!result.isConfirmed) return;
     await auth.signOut();
     navigate("/", { replace: true });
   };
