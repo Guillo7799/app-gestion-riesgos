@@ -3,6 +3,7 @@ import { db } from "../firebase/config";
 import { collection, getDocs, addDoc } from "firebase/firestore";
 import "../styles/TratamientoRiesgos.css";
 import Swal from "sweetalert2";
+import emailjs from "@emailjs/browser";
 
 export default function TratamientoRiesgos() {
   const [riesgos, setRiesgos] = useState([]);
@@ -44,10 +45,26 @@ export default function TratamientoRiesgos() {
         resImpacto,
       });
 
-      //alert("Tratamiento guardado correctamente");
+      // Enviar email al responsable
+      const templateParams = {
+        to_email: responsable,
+        riesgo: riesgo.amenaza,
+        activo: riesgo.activoNombre,
+        estrategia,
+        controles: controlesPropuestos,
+        nivel_residual: resProbabilidad * resImpacto,
+      };
+      // Reemplaza estos valores con los tuyos de EmailJS
+      await emailjs.send(
+        "service_bn1m75g",
+        "template_7c9rmir",
+        templateParams,
+        "cL7BTaypmH4qYdDN_"
+      );
+
       Swal.fire({
         title: "Éxito",
-        text: "Tratamiento guardado correctamente",
+        text: "Tratamiento guardado y correo enviado correctamente",
         icon: "success",
         confirmButtonText: "OK",
       });
@@ -56,10 +73,9 @@ export default function TratamientoRiesgos() {
       setControlesPropuestos("");
       setResponsable("");
     } catch (err) {
-      //alert("Error al guardar tratamiento: " + err.message);
       Swal.fire({
         title: "Error",
-        text: "Error al guardar tratamiento: " + err.message,
+        text: "Error al guardar tratamiento o enviar correo: " + err.message,
         icon: "error",
         confirmButtonText: "OK",
       });
@@ -114,8 +130,8 @@ export default function TratamientoRiesgos() {
         <label htmlFor="responsable">Responsable</label>
         <input
           id="responsable"
-          type="text"
-          placeholder="Responsable"
+          type="email"
+          placeholder="Correo del responsable"
           value={responsable}
           onChange={(e) => setResponsable(e.target.value)}
           required
