@@ -66,7 +66,12 @@ const Inicio = () => {
     const fetchEstrategias = async () => {
       try {
         const snap = await getDocs(collection(db, "tratamientos"));
-        const estrategias = { mitigar: 0, aceptar: 0, transferir: 0, evitar: 0 };
+        const estrategias = {
+          mitigar: 0,
+          aceptar: 0,
+          transferir: 0,
+          evitar: 0,
+        };
         // Clasifica los tratamientos por estrategia
         snap.docs.forEach((doc) => {
           const tipo = doc.data().estrategia?.toLowerCase();
