@@ -1,3 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+:root {
+  --primary-color: #FFD600;
+  --primary-color-dark: #FFC400;
+  --secondary-color: #fffbe6;
+  --danger-color: #ff4d4f;
+  --text-color: #222;
+  --border-radius: 14px;
+  --shadow: 0 4px 24px 0 rgba(255, 214, 0, 0.08);
+  --font-family: 'Roboto', Arial, sans-serif;
+}
 .observaciones-wrapper {
   max-width: 800px;
   margin: 2.5rem auto;
@@ -25,13 +37,15 @@
 }
 
 .observacion-form select,
-.observacion-form textarea {
+  .observacion-form textarea {
   padding: 0.7rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #646cff44;
-  background: #232323;
-  color: #fff;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--primary-color);
+  background: #fffde7 !important;
+  color: #222 !important;
   font-size: 1rem;
+  font-family: var(--font-family);
+  appearance: none;
 }
 
 .observacion-form textarea {
@@ -41,17 +55,20 @@
 .observacion-form button {
   align-self: flex-end;
   padding: 0.6rem 1.2rem;
-  background: #646cff;
-  color: white;
+  background: var(--primary-color);
+  color: #222;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   cursor: pointer;
-  font-weight: 500;
+  font-family: var(--font-family);
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(255, 214, 0, 0.08);
   transition: background 0.2s;
 }
 
 .observacion-form button:hover {
-  background: #4e56e6;
+  background: #ffe066;
+  color: #222;
 }
 
 .observacion-card {

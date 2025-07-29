@@ -1,3 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+:root {
+  --primary-color: #FFD600;
+  --primary-color-dark: #FFC400;
+  --secondary-color: #fffbe6;
+  --danger-color: #ff4d4f;
+  --text-color: #222;
+  --border-radius: 14px;
+  --shadow: 0 4px 24px 0 rgba(255, 214, 0, 0.08);
+  --font-family: 'Roboto', Arial, sans-serif;
+}
+
+body {
+  background-color: #fffbe6;
+  background-image: url('data:image/svg+xml;utf8,<svg width="600" height="600" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="500" cy="100" r="120" fill="%23FFD600" fill-opacity="0.13"/><rect x="-80" y="400" width="300" height="180" rx="90" fill="%23FFD600" fill-opacity="0.09"/><ellipse cx="300" cy="600" rx="180" ry="60" fill="%23FFD600" fill-opacity="0.08"/></svg>');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: top right, left bottom, center bottom;
+  background-size: 600px, 300px, 400px;
+}
 .login-container {
   display: flex;
   max-width: 700px;
@@ -6,12 +27,19 @@
   border-radius: 18px;
   box-shadow: 0 4px 32px 0 rgba(0, 0, 0, 0.18);
   overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.login-container::before {
+  /* Eliminado: fondo visual global para evitar que opaque el contenido */
+  display: none;
 }
 
 .login-left {
   flex: 1;
-  background: linear-gradient(135deg, #535bf2 0%, #646cff 60%, #7ecbff 100%);
-  color: #fff;
+  background: linear-gradient(135deg, #fffbe6 0%, #FFD600 80%, #fff 100%);
+  color: #222;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -54,26 +82,53 @@
 
 .login-form h2 {
   margin-bottom: 0.5rem;
-  color: inherit;
+  color: #222;
+}
+
+.login-form a {
+  color: #222 !important;
+  text-decoration: underline;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.login-form a:hover {
+  color: var(--primary-color-dark) !important;
 }
 
 .login-form input {
   padding: 0.8em 1em;
-  border-radius: 8px;
-  border: 1px solid #646cff44;
-  background: #232323;
-  color: #fff;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--primary-color);
+  background: #fffde7;
+  color: #222;
   font-size: 1em;
   transition: border-color 0.2s;
+  font-family: var(--font-family);
 }
 
 .login-form input:focus {
   outline: none;
-  border-color: #646cff;
+  border-color: var(--primary-color-dark);
 }
 
 .login-form button {
   margin-top: 0.5rem;
+  background: var(--primary-color);
+  color: #222;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.7rem 1.5rem;
+  cursor: pointer;
+  font-family: var(--font-family);
+  box-shadow: 0 2px 8px rgba(255, 214, 0, 0.08);
+  transition: background 0.2s;
+}
+ 
+.login-form button:hover {
+  background: #ffe066;
+  color: #222;
 }
 
 @media (prefers-color-scheme: light) {
@@ -82,8 +137,8 @@
     box-shadow: 0 4px 32px 0 rgba(100, 108, 255, 0.08);
   }
   .login-left {
-    background: linear-gradient(135deg, #535bf2 0%, #646cff 60%, #e3f0ff 100%);
-    color: #213547;
+    background: linear-gradient(135deg, #fffbe6 0%, #FFD600 80%, #fff 100%);
+    color: #222;
   }
   .login-right {
     background: var(--login-form-bg-light, #f9f9f9);

@@ -1,3 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+:root {
+  --primary-color: #FFD600;
+  --primary-color-dark: #FFC400;
+  --secondary-color: #fffbe6;
+  --danger-color: #ff4d4f;
+  --text-color: #222;
+  --border-radius: 14px;
+  --shadow: 0 4px 24px 0 rgba(255, 214, 0, 0.08);
+  --font-family: 'Roboto', Arial, sans-serif;
+}
 .dashboard-layout {
   display: flex;
   min-height: 100vh;
@@ -36,7 +48,7 @@
 }
 
 .sidebar-nav a {
-  color: #fff;
+  color: var(--text-color);
   text-decoration: none;
   font-size: 1.08rem;
   padding: 0.5rem 0.8rem;
@@ -47,14 +59,14 @@
 
 .sidebar-nav a.active,
 .sidebar-nav a:hover {
-  background: #535bf2;
-  color: #fff;
+  background: var(--primary-color);
+  color: #222;
 }
 
 .sidebar-logout {
   margin-top: 2rem;
-  background: #1a1a1a;
-  color: #fff;
+  background: var(--primary-color);
+  color: #222;
   border: none;
   border-radius: 8px;
   padding: 0.7em 1.2em;
@@ -64,45 +76,45 @@
 }
 
 .sidebar-logout:hover {
-  background: #646cff;
+  background: #ffe066;
 }
 
 .dashboard-content {
   flex: 1;
   padding: 2.5rem 2.5rem 2.5rem 2rem;
-  background: var(--dashboard-content-bg, #232323);
+  background: #fff;
   min-height: 100vh;
   overflow-y: auto;
 }
 
 @media (prefers-color-scheme: light) {
   .dashboard-layout {
-    background: var(--dashboard-bg-light, #f9f9f9);
+    background: var(--secondary-color);
   }
   .sidebar {
-    background: #f4f6fa;
-    color: #213547;
-    box-shadow: 2px 0 16px 0 rgba(100, 108, 255, 0.08);
-    border-right: 1px solid #e0e3ea;
+    background: #fff;
+    color: var(--text-color);
+    box-shadow: 2px 0 16px 0 rgba(255, 214, 0, 0.08);
+    border-right: 1px solid var(--primary-color);
   }
   .sidebar-nav a {
-    color: #213547;
+    color: var(--text-color);
   }
   .sidebar-nav a.active,
   .sidebar-nav a:hover {
-    background: #747bff;
-    color: #fff;
+    background: var(--primary-color);
+    color: #222;
   }
   .sidebar-logout {
-    background: #f9f9f9;
-    color: #213547;
+    background: var(--primary-color);
+    color: #222;
   }
   .sidebar-logout:hover {
-    background: #646cff;
-    color: #fff;
+    background: #ffe066;
+    color: #222;
   }
   .dashboard-content {
-    background: var(--dashboard-content-bg-light, #fff);
+    background: #fff;
   }
 }
 
@@ -112,14 +124,14 @@
   }
   .sidebar {
     width: 100%;
-    min-height: unset;
-    flex-direction: row;
     align-items: center;
     padding: 1rem;
     position: static;
     box-shadow: none;
-    gap: 1rem;
-    border-right: none;
+  background: #fff;
+  color: var(--text-color);
+  box-shadow: 2px 0 16px 0 rgba(255, 214, 0, 0.08);
+  border-right: 1px solid var(--primary-color);
     border-bottom: 1px solid #23233a;
   }
   .sidebar-title {

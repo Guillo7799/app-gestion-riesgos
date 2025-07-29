@@ -21,6 +21,7 @@ Esta aplicación permite la gestión integral de riesgos de seguridad de la info
 3. Ejecuta `npm run dev` para desarrollo local.
 
 ## Notas
+
 - Todas las páginas principales usan SweetAlert2 para alertas.
 - Los listados principales tienen paginación (5 elementos por página).
 - El código está comentado para facilitar su revisión y mantenimiento.

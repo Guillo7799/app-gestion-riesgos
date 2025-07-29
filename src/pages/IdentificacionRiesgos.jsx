@@ -229,8 +229,12 @@ export default function IdentificacionRiesgos() {
         activoId,
         activoNombre: activo.nombre,
         amenaza,
-        vulnerabilidad: [vulnerabilidad, ...vulnChips].filter(Boolean).join(", "),
-        controlesExistentes: [controles, ...controlChips].filter(Boolean).join(", "),
+        vulnerabilidad: [vulnerabilidad, ...vulnChips]
+          .filter(Boolean)
+          .join(", "),
+        controlesExistentes: [controles, ...controlChips]
+          .filter(Boolean)
+          .join(", "),
         probabilidad,
         impacto,
         nivelRiesgo: calcularRiesgo(),
@@ -311,9 +315,7 @@ export default function IdentificacionRiesgos() {
                 <button
                   type="button"
                   onClick={() =>
-                    setVulnChips(
-                      vulnChips.filter((c, i) => i !== idx)
-                    )
+                    setVulnChips(vulnChips.filter((c, i) => i !== idx))
                   }
                   className="chip-x"
                 >
@@ -340,9 +342,7 @@ export default function IdentificacionRiesgos() {
                 <button
                   type="button"
                   onClick={() =>
-                    setControlChips(
-                      controlChips.filter((c, i) => i !== idx)
-                    )
+                    setControlChips(controlChips.filter((c, i) => i !== idx))
                   }
                   className="chip-x"
                 >
@@ -441,7 +441,9 @@ export default function IdentificacionRiesgos() {
                 ))}
                 <button
                   type="button"
-                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  onClick={() =>
+                    setCurrentPage((p) => Math.min(totalPages, p + 1))
+                  }
                   disabled={currentPage === totalPages}
                 >
                   Siguiente

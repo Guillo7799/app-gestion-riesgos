@@ -1,13 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+:root {
+  --primary-color: #FFD600;
+  --primary-color-dark: #FFC400;
+  --secondary-color: #fffbe6;
+  --danger-color: #ff4d4f;
+  --text-color: #222;
+  --border-radius: 14px;
+  --shadow: 0 4px 24px 0 rgba(255, 214, 0, 0.08);
+  --font-family: 'Roboto', Arial, sans-serif;
+}
 .tratamiento-form {
   max-width: 480px;
   margin: 2.5rem auto;
-  background: var(--login-bg, rgba(36, 36, 36, 0.97));
-  border-radius: 14px;
-  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.1);
+  background: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
   padding: 2.5rem 2rem 2rem 2rem;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+  font-family: var(--font-family);
 }
 
 .tratamiento-form h2 {
@@ -32,20 +45,23 @@
 .form-group select,
 .form-group textarea {
   padding: 0.7em 1em;
-  border-radius: 8px;
-  border: 1px solid #646cff44;
-  background: #232323;
-  color: #fff;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--primary-color);
+  background: #fffde7 !important;
+  color: #222 !important;
+  appearance: none;
+  color: #222;
   font-size: 1em;
   transition: border-color 0.2s;
   resize: none;
+  font-family: var(--font-family);
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #646cff;
+  border-color: var(--primary-color-dark);
 }
 
 .form-group-inline {

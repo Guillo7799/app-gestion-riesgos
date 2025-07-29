@@ -1,3 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+:root {
+  --primary-color: #FFD600;
+  --primary-color-dark: #FFC400;
+  --secondary-color: #fffbe6;
+  --danger-color: #ff4d4f;
+  --text-color: #222;
+  --border-radius: 14px;
+  --shadow: 0 4px 24px 0 rgba(255, 214, 0, 0.08);
+  --font-family: 'Roboto', Arial, sans-serif;
+}
 .valoracion-layout {
   display: flex;
   gap: 2.5rem;
@@ -42,7 +54,13 @@
 .form-group input,
 .form-group select {
   padding: 0.7em 1em;
-  border-radius: 8px;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--primary-color);
+  background: #fffde7 !important;
+  color: #222 !important;
+  font-size: 1em;
+  font-family: var(--font-family);
+  appearance: none;
   border: 1px solid #646cff44;
   background: #232323;
   color: #fff;
@@ -62,15 +80,16 @@
 
 .activos-list-panel {
   flex: 1 1 260px;
-  background: var(--login-bg, rgba(36, 36, 36, 0.97));
-  border-radius: 14px;
-  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.1);
+  background: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
   padding: 2rem 1.2rem 1.2rem 1.2rem;
   min-width: 220px;
   max-width: 340px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  font-family: var(--font-family);
 }
 
 .activos-list-panel h3 {
@@ -92,16 +111,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #23233a;
-  border-radius: 8px;
+  background: var(--secondary-color);
+  border-radius: var(--border-radius);
   padding: 0.7em 1em;
-  color: #fff;
+  color: #222;
   font-size: 1em;
-  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 4px 0 rgba(255, 214, 0, 0.08);
+  font-family: var(--font-family);
 }
 
 .activo-item .categoria {
-  color: #aab2d5;
+  color: #FFD600;
   font-size: 0.97em;
   margin-left: 0.3em;
 }
