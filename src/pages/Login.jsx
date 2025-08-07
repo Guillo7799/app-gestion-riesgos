@@ -32,32 +32,40 @@ export default function Login() {
 
   return (
     <div className="login-container">
+      <div className="snowfall">
+        {Array.from({ length: 40 }).map((_, i) => (
+          <div className="snowflake" key={i}>❄</div>
+        ))}
+      </div>
       <div className="login-left">
-        <h1>Bienvenido</h1>
+        <h1>¡Bienvenido!</h1>
         <p>
-          Inicia sesión para gestionar los riesgos de tu empresa de forma segura
-          y eficiente.
+          Gestiona los riesgos de tu empresa de manera eficiente y segura. Ingresa a tu cuenta para comenzar.
         </p>
       </div>
       <div className="login-right">
         {/* Formulario de inicio de sesión */}
         <form onSubmit={handleLogin} className="login-form">
-          <h2>Iniciar Sesión</h2>
+          <h2>Iniciar sesión</h2>
+          <label htmlFor="login-email">Correo</label>
           <input
+            id="login-email"
             type="email"
             placeholder="Correo"
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+          <label htmlFor="login-password">Contraseña</label>
           <input
+            id="login-password"
             type="password"
             placeholder="Contraseña"
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit">Iniciar sesión</button>
+          <button type="submit">Ingresar</button>
           <div className="login-register-link">
-            <Link to="/register">Crear cuenta</Link>
+            <Link to="/register">¿No tienes cuenta? Regístrate</Link>
           </div>
         </form>
       </div>

@@ -37,6 +37,13 @@ export default function Register() {
 
   return (
     <div className="login-container">
+      <div className="snowfall">
+        {Array.from({ length: 40 }).map((_, i) => (
+          <div className="snowflake" key={i}>
+            ❄
+          </div>
+        ))}
+      </div>
       <div className="login-left">
         <h1>¡Crea tu cuenta!</h1>
         <p>
