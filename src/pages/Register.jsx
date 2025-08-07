@@ -40,8 +40,9 @@ export default function Register() {
       <div className="login-left">
         <h1>¡Crea tu cuenta!</h1>
         <p>
-          Regístrate para comenzar a gestionar los riesgos de tu organización de
-          forma segura y eficiente.
+          Solo necesitas registrarte en la herramienta que necesita tu empresa
+          para gestionar los riesgos de manera eficiente y segura. Accede a tu
+          cuenta para comenzar.
         </p>
       </div>
       <div className="login-right">
