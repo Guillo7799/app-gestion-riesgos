@@ -35,8 +35,8 @@ export default function Login() {
       <div className="login-left">
         <h1>Bienvenido</h1>
         <p>
-          Gestiona los riesgos de tu organización de manera eficiente y segura.
-          Accede a tu cuenta para comenzar.
+          Inicia sesión para gestionar los riesgos de tu empresa de forma segura
+          y eficiente.
         </p>
       </div>
       <div className="login-right">
