@@ -1,5 +1,6 @@
 console.log("Auth Firebase:", auth);
 import { useState } from "react";
+import Footer from "../components/Footer";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/config";
 import { useNavigate, Link } from "react-router-dom";
@@ -20,7 +21,6 @@ export default function Login() {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/dashboard");
     } catch (error) {
-      // Muestra alerta de error si falla el login
       Swal.fire({
         title: "Error",
         text: "Error al iniciar sesión: " + error.message,
@@ -31,44 +31,49 @@ export default function Login() {
   };
 
   return (
-    <div className="login-container">
-      <div className="snowfall">
-        {Array.from({ length: 40 }).map((_, i) => (
-          <div className="snowflake" key={i}>❄</div>
-        ))}
+    <>
+      <div className="login-container">
+        <div className="snowfall">
+          {Array.from({ length: 40 }).map((_, i) => (
+            <div className="snowflake" key={i}>
+              ❄
+            </div>
+          ))}
+        </div>
+        <div className="login-left">
+          <h1>¡Bienvenido!</h1>
+          <p>
+            Gestiona los riesgos de tu empresa de manera eficiente y segura. Ingresa a tu cuenta para comenzar.
+          </p>
+        </div>
+        <div className="login-right">
+          {/* Formulario de inicio de sesión */}
+          <form onSubmit={handleLogin} className="login-form">
+            <h2>Iniciar sesión</h2>
+            <label htmlFor="login-email">Correo</label>
+            <input
+              id="login-email"
+              type="email"
+              placeholder="Correo"
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <label htmlFor="login-password">Contraseña</label>
+            <input
+              id="login-password"
+              type="password"
+              placeholder="Contraseña"
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button type="submit">Ingresar</button>
+            <div className="login-register-link">
+              <Link to="/register">¿No tienes cuenta? Regístrate</Link>
+            </div>
+          </form>
+        </div>
       </div>
-      <div className="login-left">
-        <h1>¡Bienvenido!</h1>
-        <p>
-          Gestiona los riesgos de tu empresa de manera eficiente y segura. Ingresa a tu cuenta para comenzar.
-        </p>
-      </div>
-      <div className="login-right">
-        {/* Formulario de inicio de sesión */}
-        <form onSubmit={handleLogin} className="login-form">
-          <h2>Iniciar sesión</h2>
-          <label htmlFor="login-email">Correo</label>
-          <input
-            id="login-email"
-            type="email"
-            placeholder="Correo"
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <label htmlFor="login-password">Contraseña</label>
-          <input
-            id="login-password"
-            type="password"
-            placeholder="Contraseña"
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button type="submit">Ingresar</button>
-          <div className="login-register-link">
-            <Link to="/register">¿No tienes cuenta? Regístrate</Link>
-          </div>
-        </form>
-      </div>
-    </div>
+      <Footer />
+    </>
   );
 }

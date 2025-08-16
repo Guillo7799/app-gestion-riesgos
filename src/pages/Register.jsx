@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Footer from "../components/Footer";
 import { auth } from "../firebase/config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
@@ -36,48 +37,51 @@ export default function Register() {
   };
 
   return (
-    <div className="login-container">
-      <div className="snowfall">
-        {Array.from({ length: 40 }).map((_, i) => (
-          <div className="snowflake" key={i}>
-            ❄
-          </div>
-        ))}
+    <>
+      <div className="login-container">
+        <div className="snowfall">
+          {Array.from({ length: 40 }).map((_, i) => (
+            <div className="snowflake" key={i}>
+              ❄
+            </div>
+          ))}
+        </div>
+        <div className="login-left">
+          <h1>¡Crea tu cuenta!</h1>
+          <p>
+            Solo necesitas registrarte en la herramienta que necesita tu empresa
+            para gestionar los riesgos de manera eficiente y segura. Accede a tu
+            cuenta para comenzar.
+          </p>
+        </div>
+        <div className="login-right">
+          {/* Formulario de registro */}
+          <form onSubmit={handleRegister} className="login-form">
+            <h2>Registro</h2>
+            <label htmlFor="register-email">Correo</label>
+            <input
+              id="register-email"
+              type="email"
+              placeholder="Correo"
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <label htmlFor="register-password">Contraseña</label>
+            <input
+              id="register-password"
+              type="password"
+              placeholder="Contraseña"
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button type="submit">Registrarse</button>
+            <div className="login-register-link">
+              <Link to="/">Iniciar sesión</Link>
+            </div>
+          </form>
+        </div>
       </div>
-      <div className="login-left">
-        <h1>¡Crea tu cuenta!</h1>
-        <p>
-          Solo necesitas registrarte en la herramienta que necesita tu empresa
-          para gestionar los riesgos de manera eficiente y segura. Accede a tu
-          cuenta para comenzar.
-        </p>
-      </div>
-      <div className="login-right">
-        {/* Formulario de registro */}
-        <form onSubmit={handleRegister} className="login-form">
-          <h2>Registro</h2>
-          <label htmlFor="register-email">Correo</label>
-          <input
-            id="register-email"
-            type="email"
-            placeholder="Correo"
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <label htmlFor="register-password">Contraseña</label>
-          <input
-            id="register-password"
-            type="password"
-            placeholder="Contraseña"
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button type="submit">Registrarse</button>
-          <div className="login-register-link">
-            <Link to="/">Iniciar sesión</Link>
-          </div>
-        </form>
-      </div>
-    </div>
+      <Footer />
+    </>
   );
 }

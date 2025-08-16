@@ -6,16 +6,17 @@ import { getFirestore } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Configuración de Firebase
+// Reemplaza los valores de abajo con tus propias credenciales de Firebase
+// Puedes obtener estos datos desde la consola de Firebase en tu proyecto
 const firebaseConfig = {
-  apiKey: "AIzaSyCVn2H4QZ9gPwh3KWKqzKaP8In1lAgqVfs",
-  authDomain: "gestor-activos.firebaseapp.com",
-  projectId: "gestor-activos",
-  storageBucket: "gestor-activos.firebasestorage.app",
-  messagingSenderId: "437957038640",
-  appId: "1:437957038640:web:f77162c7152fdf852493f5",
-  //measurementId: "G-HKK23ZSMSL",
+  apiKey: "TU_API_KEY_AQUI",
+  authDomain: "TU_AUTH_DOMAIN_AQUI",
+  projectId: "TU_PROJECT_ID_AQUI",
+  storageBucket: "TU_STORAGE_BUCKET_AQUI",
+  messagingSenderId: "TU_MESSAGING_SENDER_ID_AQUI",
+  appId: "TU_APP_ID_AQUI",
+  //measurementId: "TU_MEASUREMENT_ID_AQUI", // Opcional
 };
 
 // Initialize Firebase

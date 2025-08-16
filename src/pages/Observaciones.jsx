@@ -3,6 +3,7 @@ import { db } from "../firebase/config";
 import { collection, getDocs, addDoc, Timestamp } from "firebase/firestore";
 import Swal from "sweetalert2";
 import "../styles/Observaciones.css";
+import Footer from "../components/Footer";
 
 // Componente principal para registrar y mostrar observaciones/recomendaciones
 export default function Observaciones() {
