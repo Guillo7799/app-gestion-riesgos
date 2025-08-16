@@ -17,6 +17,7 @@ import {
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/config";
 import ReportePDF from "../components/ReportePDF";
+import Footer from "../components/Footer";
 import "../styles/Inicio.css";
 import Swal from "sweetalert2";
 
@@ -184,6 +185,7 @@ const Inicio = () => {
           </LineChart>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

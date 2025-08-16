@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Footer from "../components/Footer";
 import { db } from "../firebase/config";
 import { collection, getDocs, addDoc } from "firebase/firestore";
 import "../styles/TratamientoRiesgos.css";
@@ -61,12 +62,16 @@ export default function TratamientoRiesgos() {
         controles: controlesPropuestos,
         nivel_residual: resProbabilidad * resImpacto,
       };
-      // Reemplaza estos valores con los tuyos de EmailJS
+      // Configura tus propios datos de EmailJS aquí:
+      // - serviceId: ID de tu servicio EmailJS
+      // - templateId: ID de tu plantilla EmailJS
+      // - publicKey: tu clave pública de EmailJS
+      // Puedes obtener estos datos en https://dashboard.emailjs.com/
       await emailjs.send(
-        "service_bn1m75g",
-        "template_7c9rmir",
+        "TU_SERVICE_ID_AQUI", // serviceId
+        "TU_TEMPLATE_ID_AQUI", // templateId
         templateParams,
-        "cL7BTaypmH4qYdDN_"
+        "TU_PUBLIC_KEY_AQUI" // publicKey
       );
 
       Swal.fire({
@@ -98,121 +103,124 @@ export default function TratamientoRiesgos() {
   );
 
   return (
-    <form onSubmit={handleSubmit} className="tratamiento-form">
-      <h2>Tratamiento del Riesgo</h2>
-      <div className="form-group">
-        <label htmlFor="riesgo-select">Riesgo</label>
-        <select
-          id="riesgo-select"
-          value={riesgoId}
-          onChange={(e) => setRiesgoId(e.target.value)}
-          required
-        >
-          <option value="">-- Selecciona un riesgo --</option>
-          {paginatedRiesgos.map((r) => (
-            <option key={r.id} value={r.id}>
-              {r.activoNombre} - {r.amenaza}
-            </option>
-          ))}
-        </select>
-        {/* Controles de paginación para el selector de riesgos */}
-        {totalPages > 1 && (
-          <div className="pagination">
-            <button
-              type="button"
-              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-              disabled={currentPage === 1}
-            >
-              Anterior
-            </button>
-            {Array.from({ length: totalPages }, (_, i) => (
-              <button
-                key={i + 1}
-                type="button"
-                className={currentPage === i + 1 ? "active" : ""}
-                onClick={() => setCurrentPage(i + 1)}
-              >
-                {i + 1}
-              </button>
+    <>
+      <form onSubmit={handleSubmit} className="tratamiento-form">
+        <h2>Tratamiento del Riesgo</h2>
+        <div className="form-group">
+          <label htmlFor="riesgo-select">Riesgo</label>
+          <select
+            id="riesgo-select"
+            value={riesgoId}
+            onChange={(e) => setRiesgoId(e.target.value)}
+            required
+          >
+            <option value="">-- Selecciona un riesgo --</option>
+            {paginatedRiesgos.map((r) => (
+              <option key={r.id} value={r.id}>
+                {r.activoNombre} - {r.amenaza}
+              </option>
             ))}
-            <button
-              type="button"
-              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-              disabled={currentPage === totalPages}
-            >
-              Siguiente
-            </button>
+          </select>
+          {/* Controles de paginación para el selector de riesgos */}
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button
+                type="button"
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+              >
+                Anterior
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => (
+                <button
+                  key={i + 1}
+                  type="button"
+                  className={currentPage === i + 1 ? "active" : ""}
+                  onClick={() => setCurrentPage(i + 1)}
+                >
+                  {i + 1}
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+              >
+                Siguiente
+              </button>
+            </div>
+          )}
+        </div>
+        <div className="form-group">
+          <label htmlFor="estrategia">Estrategia</label>
+          <select
+            id="estrategia"
+            value={estrategia}
+            onChange={(e) => setEstrategia(e.target.value)}
+            required
+          >
+            <option value="">-- Selecciona estrategia --</option>
+            <option value="Mitigar">Mitigar</option>
+            <option value="Transferir">Transferir</option>
+            <option value="Aceptar">Aceptar</option>
+            <option value="Evitar">Evitar</option>
+          </select>
+        </div>
+        <div className="form-group">
+          <label htmlFor="controlesPropuestos">Controles propuestos</label>
+          <textarea
+            id="controlesPropuestos"
+            placeholder="Controles propuestos (puedes usar controles ISO 27002)"
+            value={controlesPropuestos}
+            onChange={(e) => setControlesPropuestos(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="responsable">Responsable</label>
+          <input
+            id="responsable"
+            type="email"
+            placeholder="Correo del responsable"
+            value={responsable}
+            onChange={(e) => setResponsable(e.target.value)}
+            required
+          />
+        </div>
+        <h4>Evaluación de Riesgo Residual</h4>
+        <div className="form-group-inline">
+          <div>
+            <label htmlFor="resProbabilidad">Probabilidad residual (1-5)</label>
+            <input
+              id="resProbabilidad"
+              type="number"
+              min={1}
+              max={5}
+              value={resProbabilidad}
+              onChange={(e) => setResProbabilidad(Number(e.target.value))}
+              required
+            />
           </div>
-        )}
-      </div>
-      <div className="form-group">
-        <label htmlFor="estrategia">Estrategia</label>
-        <select
-          id="estrategia"
-          value={estrategia}
-          onChange={(e) => setEstrategia(e.target.value)}
-          required
-        >
-          <option value="">-- Selecciona estrategia --</option>
-          <option value="Mitigar">Mitigar</option>
-          <option value="Transferir">Transferir</option>
-          <option value="Aceptar">Aceptar</option>
-          <option value="Evitar">Evitar</option>
-        </select>
-      </div>
-      <div className="form-group">
-        <label htmlFor="controlesPropuestos">Controles propuestos</label>
-        <textarea
-          id="controlesPropuestos"
-          placeholder="Controles propuestos (puedes usar controles ISO 27002)"
-          value={controlesPropuestos}
-          onChange={(e) => setControlesPropuestos(e.target.value)}
-          required
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="responsable">Responsable</label>
-        <input
-          id="responsable"
-          type="email"
-          placeholder="Correo del responsable"
-          value={responsable}
-          onChange={(e) => setResponsable(e.target.value)}
-          required
-        />
-      </div>
-      <h4>Evaluación de Riesgo Residual</h4>
-      <div className="form-group-inline">
-        <div>
-          <label htmlFor="resProbabilidad">Probabilidad residual (1-5)</label>
-          <input
-            id="resProbabilidad"
-            type="number"
-            min={1}
-            max={5}
-            value={resProbabilidad}
-            onChange={(e) => setResProbabilidad(Number(e.target.value))}
-            required
-          />
+          <div>
+            <label htmlFor="resImpacto">Impacto residual (1-5)</label>
+            <input
+              id="resImpacto"
+              type="number"
+              min={1}
+              max={5}
+              value={resImpacto}
+              onChange={(e) => setResImpacto(Number(e.target.value))}
+              required
+            />
+          </div>
         </div>
-        <div>
-          <label htmlFor="resImpacto">Impacto residual (1-5)</label>
-          <input
-            id="resImpacto"
-            type="number"
-            min={1}
-            max={5}
-            value={resImpacto}
-            onChange={(e) => setResImpacto(Number(e.target.value))}
-            required
-          />
+        <div className="nivel-riesgo">
+          <strong>Nivel de riesgo residual:</strong>{" "}
+          {resProbabilidad * resImpacto}
         </div>
-      </div>
-      <div className="nivel-riesgo">
-        <strong>Nivel de riesgo residual:</strong>{" "}
-        {resProbabilidad * resImpacto}
-      </div>
-      <button type="submit">Guardar tratamiento</button>
-    </form>
+        <button type="submit">Guardar tratamiento</button>
+      </form>
+      <Footer />
+    </>
   );
 }
